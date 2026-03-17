@@ -26,8 +26,8 @@ export default function HowItWorksSection() {
     <section className="bg-muted/30 py-24">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-3xl lg:text-4xl font-bold mb-4">How Nitrogan Works</h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
+          <h2 className="text-3xl lg:text-4xl font-bold tracking-tight mb-4">How Nitrogan Works</h2>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Our proprietary engine moves at the speed of the market, turning noise into signals and
             signals into revenue.
           </p>
@@ -40,7 +40,7 @@ export default function HowItWorksSection() {
                 <Icon className="text-primary group-hover:text-primary-foreground size-8" />
               </div>
               <h3 className="text-xl font-bold mb-3">{title}</h3>
-              <p className="text-muted-foreground leading-relaxed">{description}</p>
+              <p className="text-sm text-muted-foreground leading-relaxed">{description}</p>
             </div>
           ))}
         </div>

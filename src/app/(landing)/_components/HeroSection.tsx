@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 const avatars = [
   {
@@ -28,7 +29,7 @@ export default function HeroSection() {
             <span className="text-xs font-bold text-primary uppercase tracking-wider">Next-Gen Discovery</span>
           </div>
 
-          <h1 className="text-5xl lg:text-6xl font-black leading-[1.1] tracking-tight">
+          <h1 className="text-5xl lg:text-6xl font-bold leading-[1.1] tracking-tight">
             Transform Market Signals into{" "}
             <span className="text-primary">Actionable Leads</span>
           </h1>
@@ -39,12 +40,12 @@ export default function HeroSection() {
           </p>
 
           <div className="flex flex-wrap gap-4">
-            <button className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg px-8 py-4 font-bold text-lg transition-all shadow-xl shadow-primary/25">
+            <Link href="/sign-up" className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg px-8 py-4 font-bold text-lg transition-all shadow-xl shadow-primary/25">
               Book a Demo
-            </button>
-            <button className="bg-secondary hover:bg-secondary/80 rounded-lg px-8 py-4 font-bold text-lg transition-all">
+            </Link>
+            <Link href="#" className="bg-secondary hover:bg-secondary/80 rounded-lg px-8 py-4 font-bold text-lg transition-all">
               View Solutions
-            </button>
+            </Link>
           </div>
 
           <div className="flex items-center gap-6 mt-4">

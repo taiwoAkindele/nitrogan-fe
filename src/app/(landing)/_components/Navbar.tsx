@@ -36,12 +36,12 @@ export default function Navbar() {
 
       <div className="flex items-center gap-4">
         <ThemeToggle />
-        <button className="hidden sm:flex text-sm font-bold hover:text-primary transition-colors px-4 py-2">
+        <Link href="/sign-in" className="hidden sm:flex text-sm font-bold hover:text-primary transition-colors px-4 py-2">
           Log In
-        </button>
-        <button className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg px-5 py-2.5 text-sm font-bold transition-all shadow-lg shadow-primary/20">
+        </Link>
+        <Link href="/sign-up" className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg px-5 py-2.5 text-sm font-bold transition-all shadow-lg shadow-primary/20">
           Get a Demo
-        </button>
+        </Link>
       </div>
     </header>
   );
