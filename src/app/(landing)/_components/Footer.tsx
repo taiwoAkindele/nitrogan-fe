@@ -38,7 +38,7 @@ export default function Footer() {
         <div className="col-span-2">
           <div className="flex items-center gap-3 mb-6">
             <NitroganLogo />
-            <h2 className="text-lg font-bold tracking-tight">Nitrogan</h2>
+            <h2 className="text-xl font-bold tracking-tight">Nitrogan</h2>
           </div>
           <p className="text-muted-foreground text-sm max-w-xs leading-relaxed">
             The intelligence layer for modern sales organizations. Scale smarter, not harder.

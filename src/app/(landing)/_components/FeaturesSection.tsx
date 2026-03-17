@@ -44,7 +44,7 @@ export default function FeaturesSection() {
     <section className="py-24 max-w-7xl mx-auto px-6">
       <div className="flex flex-col lg:flex-row gap-12 mb-16 items-end justify-between">
         <div className="max-w-2xl">
-          <h2 className="text-4xl font-bold mb-6 tracking-tight">
+          <h2 className="text-3xl lg:text-4xl font-bold mb-6 tracking-tight">
             Everything you need to dominate your market
           </h2>
           <p className="text-lg text-muted-foreground">
@@ -65,7 +65,7 @@ export default function FeaturesSection() {
           >
             <Icon className="text-primary mb-6 size-10" />
             <h3 className="text-xl font-bold mb-3">{title}</h3>
-            <p className="text-muted-foreground">{description}</p>
+            <p className="text-sm text-muted-foreground">{description}</p>
           </div>
         ))}
       </div>
