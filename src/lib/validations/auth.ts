@@ -29,3 +29,31 @@ export const signInSchema = yup.object({
 });
 
 export type SignInFormData = yup.InferType<typeof signInSchema>;
+
+export const forgotPasswordSchema = yup.object({
+  email: yup
+    .string()
+    .required("Email is required")
+    .email("Please enter a valid email address"),
+});
+
+export type ForgotPasswordFormData = yup.InferType<typeof forgotPasswordSchema>;
+
+export const changePasswordSchema = yup.object({
+  currentPassword: yup.string().required("Current password is required"),
+  newPassword: yup
+    .string()
+    .required("New password is required")
+    .min(8, "Password must be at least 8 characters")
+    .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
+    .matches(
+      /[!@#$%^&*]/,
+      "Password must contain at least one special character (!@#$%^&*)"
+    ),
+  confirmPassword: yup
+    .string()
+    .required("Please confirm your new password")
+    .oneOf([yup.ref("newPassword")], "Passwords do not match"),
+});
+
+export type ChangePasswordFormData = yup.InferType<typeof changePasswordSchema>;
