@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Mail, Lock, Eye, EyeOff, ArrowRight } from "lucide-react";
@@ -61,6 +62,7 @@ const GitHubIcon = () => (
 );
 
 export default function SignInPage() {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
 
@@ -73,8 +75,9 @@ export default function SignInPage() {
   });
 
   const onSubmit = (data: SignInFormData) => {
-    // TODO: connect to backend
+    // TODO: connect to backend — replace hardcoded tenant ID with real one from auth response
     console.log("Sign in data:", data, { rememberMe });
+    router.push("/org/default");
   };
 
   return (
