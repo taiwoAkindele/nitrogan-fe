@@ -8,18 +8,28 @@ import {
   RefreshCw,
   Bookmark,
   MoreHorizontal,
+  CirclePlay,
+  Archive,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import type { ProspectDetail } from "../types";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import type { ProspectDetail, ProspectStatus } from "../types";
 import { SignalList } from "./signal-list";
 import { PersonaList } from "./persona-list";
 
 interface IntelligenceDetailPanelProps {
   prospect: ProspectDetail | null;
+  onStatusChange: (prospectId: string, newStatus: ProspectStatus) => void;
 }
 
 export function IntelligenceDetailPanel({
   prospect,
+  onStatusChange,
 }: IntelligenceDetailPanelProps) {
   if (!prospect) {
     return (
@@ -67,13 +77,40 @@ export function IntelligenceDetailPanel({
             </div>
           </div>
           <div className="flex gap-2">
-            <Button variant="secondary" size="sm" className="gap-2 font-bold">
-              <Bookmark className="size-4" />
-              Save
+            <Button
+              variant="secondary"
+              size="sm"
+              className="gap-2 font-bold"
+              onClick={() => onStatusChange(prospect.id, "saved")}
+            >
+              <Bookmark
+                className={`size-4 ${prospect.status === "saved" ? "fill-current" : ""}`}
+              />
+              {prospect.status === "saved" ? "Saved" : "Save"}
             </Button>
-            <Button variant="secondary" size="icon-sm">
-              <MoreHorizontal className="size-4" />
-            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger className="inline-flex size-8 items-center justify-center rounded-lg bg-secondary text-secondary-foreground transition-colors hover:bg-secondary/80">
+                <MoreHorizontal className="size-4" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                {prospect.status !== "active" && (
+                  <DropdownMenuItem
+                    onClick={() => onStatusChange(prospect.id, "active")}
+                  >
+                    <CirclePlay className="mr-2 size-4" />
+                    Move to Active
+                  </DropdownMenuItem>
+                )}
+                {prospect.status !== "archive" && (
+                  <DropdownMenuItem
+                    onClick={() => onStatusChange(prospect.id, "archive")}
+                  >
+                    <Archive className="mr-2 size-4" />
+                    Move to Archive
+                  </DropdownMenuItem>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
 
