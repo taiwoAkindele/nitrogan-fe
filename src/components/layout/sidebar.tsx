@@ -71,7 +71,13 @@ export function Sidebar() {
               Enterprise Sales
             </p>
           </div>
-          <Settings className="size-4 text-muted-foreground" />
+          <Link
+            href={`${basePath}/settings`}
+            aria-label="Settings"
+            className="text-muted-foreground transition-colors hover:text-foreground"
+          >
+            <Settings className="size-4" />
+          </Link>
         </div>
       </div>
     </div>

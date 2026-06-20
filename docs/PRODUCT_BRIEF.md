@@ -171,8 +171,13 @@ prospect list and an account-level conversion view.
   pre-written context. The `SignalList` also shows a "+N intent" badge per signal.
   *Still open: the angle is display-only — wiring "use this" into the email composer
   needs the outreach/compose surface.*
-- **Settings is a dead icon** in the sidebar. Team/seat management, integrations, and
-  sending configuration need a home; scaffold it.
+- **Settings is a dead icon** in the sidebar. **Done (2026-06-20):** scaffolded a
+  `settings` feature + route (`/org/[tenantId]/settings`) and wired the sidebar gear to
+  it. Three tabbed sections: **Team & Seats** (member list, seat usage, invite),
+  **Integrations** (Salesforce / HubSpot / Outreach connect cards with status — also the
+  home for the CRM gap below), and **Sending** (mailbox, domain-verification status,
+  daily send cap — the home for issue 2's deferred deliverability config). Structure is
+  real; the actions are stubs pending a backend.
 - **CRM integration is a headline feature** (Salesforce / HubSpot / Outreach,
   `FeaturesSection.tsx`) but absent from the app. For this buyer, "does it sync to my
   CRM?" is often a deal-breaker — even a "Connect / coming soon" stub sets expectations.
