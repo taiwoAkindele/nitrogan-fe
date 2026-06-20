@@ -66,10 +66,14 @@ human-in-the-loop tool. Implemented:
   `auto`), and a `pendingApproval` count; new `SequenceStep` / `PendingMessage` /
   `CampaignDetail` types.
 - A campaign **detail view** (`/org/[tenantId]/campaigns/[campaignId]`) wiring up the
-  previously-dead card click, with four sections: **Sending mode** (approval toggle,
-  manual = recommended/default), **Pending review** queue (approve/skip, nothing sends
-  without sign-off), read-only **Sequence**, and a **Safety & compliance** strip
-  (opt-out, suppression list, send caps).
+  previously-dead card click. Organized by cadence into two tabs (design review found a
+  single stacked page buried the daily work under set-once config):
+  - **Review** (default) — the **Pending review** queue (per-message approve/skip plus
+    Approve-all), with an **undo** affordance instead of a blocking confirm. In
+    auto-send mode it shows an explainer rather than an empty list.
+  - **Setup** — **Sending mode** (approval toggle, manual = recommended/default) paired
+    with the **Safety & compliance** guardrails (opt-out, suppression, send caps), then
+    the read-only **Sequence** template.
 - Dashboard now has a **Draft** tab; cards show a "Review (N)" affordance when messages
   await approval.
 
