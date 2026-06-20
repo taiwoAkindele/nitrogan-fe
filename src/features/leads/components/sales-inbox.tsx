@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { ProspectDetail, ProspectStatus } from "../types";
+import type { LeadFeedback, ProspectDetail, ProspectStatus } from "../types";
 import { MOCK_PROSPECTS } from "../utils/mock-data";
 import { ProspectListPane } from "./prospect-list-pane";
 import { IntelligenceDetailPanel } from "./intelligence-detail-panel";
@@ -37,6 +37,20 @@ export function SalesInbox() {
     // TODO: server call — e.g. api(`/prospects/${prospectId}/status`, { method: "PATCH", body: JSON.stringify({ status: newStatus }) })
   };
 
+  const handleRateLead = (prospectId: string, feedback: LeadFeedback) => {
+    // Clicking the active rating again clears it.
+    setProspects((prev) =>
+      prev.map((p) =>
+        p.id === prospectId
+          ? { ...p, feedback: p.feedback === feedback ? undefined : feedback }
+          : p
+      )
+    );
+
+    // TODO: server call — feeds the intent-scoring model.
+    // api(`/prospects/${prospectId}/feedback`, { method: "PATCH", body: JSON.stringify({ feedback }) })
+  };
+
   return (
     <div className="flex h-full overflow-hidden">
       <ProspectListPane
@@ -49,6 +63,7 @@ export function SalesInbox() {
       <IntelligenceDetailPanel
         prospect={selectedProspect}
         onStatusChange={handleStatusChange}
+        onRateLead={handleRateLead}
       />
     </div>
   );

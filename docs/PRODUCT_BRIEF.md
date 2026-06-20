@@ -126,10 +126,20 @@ dashboard network stats and the intent-score trend bars.
 
 ### 2.5 No measurement of the thing being sold: outcomes
 The product sells **meetings booked / pipeline**. The dashboard shows sent/replies/
-meetings per bot, but there is no account-level **lead-quality feedback** (did
-discovered leads convert?) and no way for a rep to mark a lead good/bad. That feedback
-loop is what makes "predictive scoring" real over time — and it is the **moat**. Build
-the rating mechanism early, even with a naive model behind it.
+meetings per bot, but there was no **lead-quality feedback** (did discovered leads
+convert?) and no way for a rep to mark a lead good/bad. That feedback loop is what makes
+"predictive scoring" real over time — and it is the **moat**.
+
+**Resolved (2026-06-20, mock data):** the rating mechanism now exists. A
+**LeadQualityCard** sits directly under the Intent Score in the prospect intelligence
+panel ("We scored it 94/100 — was this a good lead?"), with thumbs-up / thumbs-down
+("Good fit" / "Not a fit"). Rating sets `feedback` on the prospect (optimistic update in
+`SalesInbox`, clicking the active rating clears it), and confirms the signal tunes the
+intent model. A new `LeadFeedback` type carries the verdict.
+
+Still open (needs a backend): persisting the rating (`// TODO` at the handler) and
+actually feeding it into the scoring model; optionally surfacing a rated indicator in the
+prospect list and an account-level conversion view.
 
 ---
 

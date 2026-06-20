@@ -1,5 +1,8 @@
 export type IntentLabel = "High" | "Medium" | "Low";
 export type ProspectStatus = "new" | "saved" | "active" | "archive";
+// Rep's verdict on whether a discovered lead was actually worth pursuing.
+// This is the training signal that calibrates intent scoring over time.
+export type LeadFeedback = "good" | "bad";
 
 export interface Prospect {
   id: string;
@@ -44,4 +47,6 @@ export interface ProspectDetail extends Prospect {
   signals: Signal[];
   personas: Persona[];
   firmographics: Firmographic[];
+  /** Rep's quality rating; undefined until they rate the lead. */
+  feedback?: LeadFeedback;
 }
