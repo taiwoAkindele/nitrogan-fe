@@ -230,7 +230,32 @@ P2 minor stacking. Verify at 375 / 768 / 1280px.
 
 ---
 
-## 5. Recommended sequence
+## 5. Decision: tenancy model
+
+**Decided (2026-06-21).** The product is **tenant / workspace-based**: each customer is
+one isolated organization. An **admin invites reps**, who work in the shared workspace
+with roles. All shared resources (campaigns, prospect inbox, ICP library, CRM
+connection, sending domains, seats/billing) belong to the org, not the individual.
+
+**No org switcher / multi-org-per-user flow for now.** This is *not* Slack-style
+workspace switching. A rep belongs to **one org at a time**; a job change is a re-invite
+(+ deactivation), not a toggle. Building a switcher today would be dead weight.
+
+**Flexibility as insurance, not a built flow.** The *only* case that needs one person
+across multiple orgs is **agencies / outsourced SDR shops** running outbound for several
+clients. That is not a current target, so the multi-org UX is **not built**. The hedge is
+purely at the data layer: model the user↔org link as a **many-to-many membership** (join
+table) rather than a single `user.organization_id`, so agencies can be enabled later
+**without a migration**. No switcher, no multi-org screens — just a schema shape that
+won't need repainting. Build the actual flow only when an agency segment demands it.
+
+**Naming / routing notes:** user-facing term is **"Workspace" / "Organization,"** never
+"tenant" (architecture word). Prefer a human **slug** over the raw `tenantId` in URLs
+(current routing is `/org/[tenantId]`).
+
+---
+
+## 6. Recommended sequence
 
 1. **Lock branding + positioning** (~1 day; unblocks everything downstream).
 2. **Wire one vertical slice to a real backend** — Discovery → save segment → Inbox
@@ -243,7 +268,7 @@ P2 minor stacking. Verify at 375 / 768 / 1280px.
 
 ---
 
-## 6. Open questions
+## 7. Open questions
 
 - What is the canonical product name and primary domain?
 - Is outreach sending in-scope for v1, or is the wedge discovery + CRM sync only?
