@@ -46,8 +46,8 @@ export function LeadBuilder() {
 
   return (
     <div className="flex h-full">
-      {/* Left Column: Configuration */}
-      <aside className="flex w-[420px] shrink-0 flex-col border-r border-border">
+      {/* Left Column: Configuration — scrolls independently of the predictor */}
+      <aside className="flex w-[420px] shrink-0 flex-col overflow-y-auto border-r border-border">
         <BuilderConfigPane
           state={state}
           availableIndustries={AVAILABLE_INDUSTRIES}
