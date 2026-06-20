@@ -33,8 +33,13 @@ export function SignalList({ signals }: SignalListProps) {
               >
                 <Icon className="size-5" />
               </div>
-              <div>
-                <p className="text-sm font-bold">{signal.title}</p>
+              <div className="min-w-0 flex-1">
+                <div className="flex items-start justify-between gap-3">
+                  <p className="text-sm font-bold">{signal.title}</p>
+                  <span className="shrink-0 text-xs font-bold text-primary">
+                    +{signal.scoreContribution} intent
+                  </span>
+                </div>
                 <p className="mt-1 text-xs text-muted-foreground">
                   {signal.description}
                 </p>

@@ -25,6 +25,9 @@ export const MOCK_PROSPECTS: ProspectDetail[] = [
         title: "Expansion Signal",
         description:
           "Hiring 15+ DevOps Engineers across EMEA region. Estimated cloud spend increasing by 35%.",
+        scoreContribution: 40,
+        outreachAngle:
+          "Open with their EMEA DevOps hiring spree and the rising cloud spend it implies.",
       },
       {
         id: "s2",
@@ -32,6 +35,9 @@ export const MOCK_PROSPECTS: ProspectDetail[] = [
         title: "Executive Interest",
         description:
           'Jane Doe (CTO) downloaded Whitepaper: "Scaling Multi-cloud Security" at 11:42 AM.',
+        scoreContribution: 32,
+        outreachAngle:
+          "Reference the CTO's hands-on interest in scaling multi-cloud security.",
       },
       {
         id: "s3",
@@ -39,6 +45,9 @@ export const MOCK_PROSPECTS: ProspectDetail[] = [
         title: "Technographic Shift",
         description:
           'Uninstalled Datadog. Currently searching for "Modern alternatives to observability stacks".',
+        scoreContribution: 22,
+        outreachAngle:
+          "Lead with their move off Datadog toward a modern observability stack.",
       },
     ],
     personas: [
@@ -85,6 +94,9 @@ export const MOCK_PROSPECTS: ProspectDetail[] = [
         type: "executive",
         title: "Leadership Change",
         description: "New Head of Sales appointed with prior experience using competitor tools at Oracle.",
+        scoreContribution: 67,
+        outreachAngle:
+          "Congratulate the new Head of Sales and connect to their Oracle-era tooling.",
       },
     ],
     personas: [
@@ -125,12 +137,17 @@ export const MOCK_PROSPECTS: ProspectDetail[] = [
         type: "expansion",
         title: "Web Traffic Surge",
         description: "Pricing page visits increased by 400% in the last 24 hours.",
+        scoreContribution: 50,
+        outreachAngle:
+          "Strike while it's hot — their pricing-page traffic just spiked 400%.",
       },
       {
         id: "s6",
         type: "funding",
         title: "Budget Allocation",
         description: "Q2 budget planning documents reference digital transformation initiative.",
+        scoreContribution: 38,
+        outreachAngle: "Anchor on their Q2 digital-transformation budget line.",
       },
     ],
     personas: [
@@ -171,6 +188,9 @@ export const MOCK_PROSPECTS: ProspectDetail[] = [
         type: "expansion",
         title: "Hiring Signal",
         description: '"Digital Transformation Manager" role posted, matching target buyer persona.',
+        scoreContribution: 32,
+        outreachAngle:
+          "Reference the Digital Transformation Manager opening as an active buying signal.",
       },
     ],
     personas: [

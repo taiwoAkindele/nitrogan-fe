@@ -23,6 +23,10 @@ export interface Signal {
   type: "expansion" | "executive" | "technographic" | "funding";
   title: string;
   description: string;
+  /** Points this signal adds to the intent score — the "why" behind the number. */
+  scoreContribution: number;
+  /** Suggested outreach opener referencing this signal. */
+  outreachAngle: string;
 }
 
 export interface Persona {

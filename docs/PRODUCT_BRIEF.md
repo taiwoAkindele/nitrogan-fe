@@ -163,9 +163,14 @@ prospect list and an account-level conversion view.
   `SalesInbox` (`handleBulkStatusChange`, optimistic, `// TODO` server). Selection clears
   on tab change. *Recency sort / signal-type filter deferred — the prospect model has no
   sortable timestamp or first-class signal-type facet yet.*
-- **No "why this lead" explainability.** Signals and an intent score are shown, but not
-  which signals drove the score. That explanation is the bridge to "pre-written
-  outreach context" — connect them.
+- **No "why this lead" explainability.** Signals and an intent score were shown, but not
+  which signals drove the score. **Done (2026-06-20):** each `Signal` now carries a
+  `scoreContribution` and an `outreachAngle`. A new **WhyThisLeadCard** (under the intent
+  score) attributes the score to its ranked drivers (with contribution bars) and surfaces
+  the top driver as a ready-to-use **suggested outreach angle** — the bridge to
+  pre-written context. The `SignalList` also shows a "+N intent" badge per signal.
+  *Still open: the angle is display-only — wiring "use this" into the email composer
+  needs the outreach/compose surface.*
 - **Settings is a dead icon** in the sidebar. Team/seat management, integrations, and
   sending configuration need a home; scaffold it.
 - **CRM integration is a headline feature** (Salesforce / HubSpot / Outreach,

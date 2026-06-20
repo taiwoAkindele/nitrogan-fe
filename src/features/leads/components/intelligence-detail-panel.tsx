@@ -1,6 +1,7 @@
 import type { LeadFeedback, ProspectDetail, ProspectStatus } from "../types";
 import { IntelligenceDetailHeader } from "./intelligence-detail-header";
 import { IntentScoreChart } from "./intent-score-chart";
+import { WhyThisLeadCard } from "./why-this-lead-card";
 import { LeadQualityCard } from "./lead-quality-card";
 import { FirmographicsCard } from "./firmographics-card";
 import { SignalList } from "./signal-list";
@@ -38,6 +39,10 @@ export function IntelligenceDetailPanel({
         {/* Left Column */}
         <div className="col-span-8 space-y-6">
           <IntentScoreChart score={prospect.intentScore} />
+          <WhyThisLeadCard
+            score={prospect.intentScore}
+            signals={prospect.signals}
+          />
           <LeadQualityCard
             score={prospect.intentScore}
             feedback={prospect.feedback}
