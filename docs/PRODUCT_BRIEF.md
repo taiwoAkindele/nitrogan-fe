@@ -211,9 +211,12 @@ collapse, not a mobile-first rewrite.
   `md:flex-row` already.)
 
 **Planned behavior:**
-- **Nav shell (P0):** sidebar → persistent (lg) / 64px icon rail (md) / off-canvas drawer
-  (sm); **bottom tab bar on small** for the 3 primary destinations; topbar search
-  collapses to an icon, "New Discovery" → icon-only, hamburger added on small.
+- **Nav shell (P0) — DONE (2026-06-21):** new `AppShell` orchestrates the chrome.
+  Sidebar → persistent full (lg) / 64px icon rail (md) / off-canvas drawer (sm, via
+  topbar hamburger); **bottom tab bar on small** for the 3 primary destinations; topbar
+  gains the hamburger, search flexes/shrinks (kept as a shrinking input rather than an
+  icon toggle — avoids dead UI), and "New Discovery" → icon-only on small. Large screens
+  unchanged.
 - **Sales Inbox (P0):** lg side-by-side → md narrow list + detail sub-grid stacks → sm
   **one-view-at-a-time** (list, tap pushes full-screen detail with back; reuses
   `selectedProspectId`).
