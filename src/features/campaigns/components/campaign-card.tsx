@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { MoreVertical } from "lucide-react";
 
 import { Avatar } from "@/components/ui/avatar";
@@ -8,10 +9,14 @@ import type { Campaign } from "../types";
 
 interface CampaignCardProps {
   campaign: Campaign;
+  /** Link to this campaign's detail view. */
+  href: string;
 }
 
-export function CampaignCard({ campaign }: CampaignCardProps) {
+export function CampaignCard({ campaign, href }: CampaignCardProps) {
   const isActive = campaign.status === "active";
+  const reviewCount =
+    campaign.approvalMode === "manual" ? campaign.pendingApproval : 0;
 
   const metrics = [
     {
@@ -40,14 +45,21 @@ export function CampaignCard({ campaign }: CampaignCardProps) {
             <span className="mb-1 text-[10px] font-bold uppercase tracking-widest text-primary">
               Bot {campaign.botNumber}
             </span>
-            <h3 className="text-lg font-bold text-foreground transition-colors group-hover:text-primary">
+            <Link
+              href={href}
+              className="text-lg font-bold text-foreground transition-colors group-hover:text-primary"
+            >
               {campaign.name}
-            </h3>
+            </Link>
           </div>
           <div className="flex items-center gap-2">
-            {isActive ? (
+            {campaign.status === "active" ? (
               <Badge tone="success" shape="pill" dot>
                 ACTIVE
+              </Badge>
+            ) : campaign.status === "draft" ? (
+              <Badge tone="warning" shape="pill">
+                DRAFT
               </Badge>
             ) : (
               <Badge tone="neutral" shape="pill">
@@ -109,12 +121,17 @@ export function CampaignCard({ campaign }: CampaignCardProps) {
               </span>
             </div>
           </div>
-          <button
-            type="button"
-            className="rounded-lg bg-muted px-4 py-2 text-xs font-bold text-foreground/70 transition-all hover:bg-primary hover:text-white"
+          <Link
+            href={href}
+            className={cn(
+              "rounded-lg px-4 py-2 text-xs font-bold transition-all",
+              reviewCount > 0
+                ? "bg-amber-500/10 text-amber-600 hover:bg-amber-500/20"
+                : "bg-muted text-foreground/70 hover:bg-primary hover:text-white"
+            )}
           >
-            View Leads
-          </button>
+            {reviewCount > 0 ? `Review (${reviewCount})` : "Manage"}
+          </Link>
         </div>
       </div>
     </div>

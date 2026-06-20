@@ -54,15 +54,28 @@ timing is a wedge.
 ### 2.2 The "Act" step is a black box — and the riskiest claim
 Campaigns are framed as autonomous "AI bots" sending outreach at "high velocity / at
 scale." This is the part buyers are most nervous about (deliverability, sending-domain
-reputation, anti-spam law, brand risk). Currently missing:
-- Message review / approval gate before sends
-- Sequence / step editor
-- Deliverability and sending-domain controls
-- Compliance guardrails on the **sending** side (GDPR is shown on sourcing, not outreach)
+reputation, anti-spam law, brand risk).
 
 **Recommendation:** for v1, reposition bots as *assisted* (human-in-the-loop), not
 *autonomous*. Safer and easier to sell to sales leaders who fear a bot harming their
 domain reputation.
+
+**v1 assisted slice — shipped (2026-06-20, mock data):** the black box is now a
+human-in-the-loop tool. Implemented:
+- `Campaign` model gained a `draft` status, an `approvalMode` (`manual` default /
+  `auto`), and a `pendingApproval` count; new `SequenceStep` / `PendingMessage` /
+  `CampaignDetail` types.
+- A campaign **detail view** (`/org/[tenantId]/campaigns/[campaignId]`) wiring up the
+  previously-dead card click, with four sections: **Sending mode** (approval toggle,
+  manual = recommended/default), **Pending review** queue (approve/skip, nothing sends
+  without sign-off), read-only **Sequence**, and a **Safety & compliance** strip
+  (opt-out, suppression list, send caps).
+- Dashboard now has a **Draft** tab; cards show a "Review (N)" affordance when messages
+  await approval.
+
+Still open (needs a backend, out of scope for the mock slice): sequence/step *editor*
+(currently read-only), real sending-domain/mailbox configuration and throttling, and
+wiring approve/skip + mode changes to a server.
 
 ### 2.3 The loop has a missing seam: Discover → Act is disconnected
 "Launch Campaign" in the Lead Builder (`lead-builder.tsx`) and "Create New Bot" in

@@ -5,6 +5,7 @@ import { PlusCircle, Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { TabBar, type TabItem } from "@/components/ui/tab-bar";
+import { useTenant } from "@/lib/tenant/context";
 
 import type { CampaignStatus } from "../types";
 import { MOCK_CAMPAIGNS, MOCK_NETWORK_STATS } from "../utils/mock-data";
@@ -14,16 +15,18 @@ import { NetworkStatsBanner } from "./network-stats-banner";
 type TabFilter = "all" | CampaignStatus;
 
 export function CampaignDashboard() {
+  const { tenantId } = useTenant();
   const [activeTab, setActiveTab] = useState<TabFilter>("all");
 
   const campaigns = MOCK_CAMPAIGNS;
-  const activeCampaigns = campaigns.filter((c) => c.status === "active");
-  const pausedCampaigns = campaigns.filter((c) => c.status === "paused");
+  const countByStatus = (status: CampaignStatus) =>
+    campaigns.filter((c) => c.status === status).length;
 
   const tabs: TabItem<TabFilter>[] = [
     { value: "all", label: "All Bots", count: campaigns.length },
-    { value: "active", label: "Active", count: activeCampaigns.length },
-    { value: "paused", label: "Paused", count: pausedCampaigns.length },
+    { value: "active", label: "Active", count: countByStatus("active") },
+    { value: "draft", label: "Draft", count: countByStatus("draft") },
+    { value: "paused", label: "Paused", count: countByStatus("paused") },
   ];
 
   const filteredCampaigns =
@@ -62,7 +65,11 @@ export function CampaignDashboard() {
       {/* Campaign Grid */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {filteredCampaigns.map((campaign) => (
-          <CampaignCard key={campaign.id} campaign={campaign} />
+          <CampaignCard
+            key={campaign.id}
+            campaign={campaign}
+            href={`/org/${tenantId}/campaigns/${campaign.id}`}
+          />
         ))}
 
         {/* New Automation Card */}
