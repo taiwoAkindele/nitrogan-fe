@@ -83,10 +83,24 @@ wiring approve/skip + mode changes to a server.
 
 ### 2.3 The loop has a missing seam: Discover → Act is disconnected
 "Launch Campaign" in the Lead Builder (`lead-builder.tsx`) and "Create New Bot" in
-Campaigns (`campaign-dashboard.tsx`) are separate entry points. A user who carefully
-builds an audience should flow **directly** into a campaign seeded with that audience.
-Today the built segment and the launched campaign do not visibly connect. **This is the
-#1 UX/product gap in the core loop.**
+Campaigns (`campaign-dashboard.tsx`) were separate dead-end entry points. A user who
+carefully built an audience could not flow **directly** into a campaign seeded with that
+audience.
+
+**Resolved (2026-06-20, mock data):** the seam is now wired in both directions.
+- **Discover → Act:** the Lead Builder CTA (renamed "Create Campaign →") collapses the
+  ICP builder state into a summary (`strategy/utils/icp-summary.ts`) and routes to
+  `/org/[tenantId]/campaigns/new?icp=…`, which seeds a **draft** campaign
+  (`buildDraftCampaign`) pre-filled with that audience + the default sequence, landing on
+  the **Setup** tab to finish and launch.
+- **Act → Discover:** "Create New Bot" and the "New Automation" card now route to
+  Discovery — enforcing audience-first (you can't make a bot without defining who it
+  targets).
+- Drafts open on the **Setup** tab; live campaigns open on **Review**.
+
+Still open (needs a backend): the seeded ICP is passed as a display string only — the
+real audience/segment isn't persisted or attached to the campaign as queryable
+targeting, and "new" is a placeholder id rather than a created record.
 
 ### 2.4 Predictions and trust signals are hard-coded
 "~45 high-intent leads/week," "Peak Performance," "Confidence 94%,"

@@ -141,3 +141,21 @@ export function getCampaignDetail(id: string): CampaignDetail | undefined {
     pendingMessages: PENDING_BY_CAMPAIGN[id] ?? [],
   };
 }
+
+// A fresh draft seeded from the Discover step's ICP. Starts with the default
+// sequence so the user can review and launch instead of building from scratch.
+export function buildDraftCampaign(icp: string): CampaignDetail {
+  return {
+    id: "new",
+    botNumber: "#NEW",
+    name: "Untitled campaign",
+    status: "draft",
+    icp: icp || "Audience not set",
+    metrics: { sent: "0", replies: "0", meetings: "0" },
+    assignee: { name: "Alex Rivera", avatarInitial: "AR" },
+    approvalMode: "manual",
+    pendingApproval: 0,
+    sequence: SAMPLE_SEQUENCE,
+    pendingMessages: [],
+  };
+}

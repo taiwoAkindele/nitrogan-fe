@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { PlusCircle, Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -47,7 +48,12 @@ export function CampaignDashboard() {
             scale.
           </p>
         </div>
-        <Button size="lg" className="gap-2 font-bold tracking-wide shadow-lg shadow-primary/20">
+        {/* A campaign needs an audience first — start in Discovery. */}
+        <Button
+          size="lg"
+          className="gap-2 font-bold tracking-wide shadow-lg shadow-primary/20"
+          render={<Link href={`/org/${tenantId}/strategy`} />}
+        >
           <PlusCircle className="size-5" />
           Create New Bot
         </Button>
@@ -73,8 +79,8 @@ export function CampaignDashboard() {
         ))}
 
         {/* New Automation Card */}
-        <button
-          type="button"
+        <Link
+          href={`/org/${tenantId}/strategy`}
           className="group flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-border p-10 text-center transition-colors hover:bg-muted/40"
         >
           <div className="mb-4 flex size-12 items-center justify-center rounded-full bg-muted text-muted-foreground transition-all group-hover:bg-primary/10 group-hover:text-primary">
@@ -84,7 +90,7 @@ export function CampaignDashboard() {
           <p className="text-sm text-muted-foreground">
             Scale your outreach by creating a new AI bot.
           </p>
-        </button>
+        </Link>
       </div>
 
       {/* Network Stats Banner */}

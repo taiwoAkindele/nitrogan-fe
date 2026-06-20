@@ -42,7 +42,11 @@ interface UndoState {
 
 export function CampaignDetailView({ campaign }: CampaignDetailViewProps) {
   const { tenantId } = useTenant();
-  const [tab, setTab] = useState<DetailTab>("review");
+  // Drafts open on Setup (you launch from there); live campaigns open on
+  // Review (the daily work).
+  const [tab, setTab] = useState<DetailTab>(
+    campaign.status === "draft" ? "setup" : "review"
+  );
   const [status, setStatus] = useState<CampaignStatus>(campaign.status);
   const [approvalMode, setApprovalMode] = useState<ApprovalMode>(
     campaign.approvalMode

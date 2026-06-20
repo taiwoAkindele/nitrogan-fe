@@ -1,2 +1,2 @@
 export { CampaignDashboard, CampaignDetailView } from "./components";
-export { getCampaignDetail } from "./utils/mock-data";
+export { getCampaignDetail, buildDraftCampaign } from "./utils/mock-data";

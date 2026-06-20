@@ -1,7 +1,9 @@
 "use client";
 
-import { Shield, Clock, Rocket } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Shield, Clock, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useTenant } from "@/lib/tenant/context";
 import {
   AVAILABLE_INDUSTRIES,
   AVAILABLE_GEOGRAPHIES,
@@ -10,11 +12,14 @@ import {
   MOCK_SAMPLE_LEADS,
   MOCK_PREDICTION,
 } from "../utils/mock-data";
+import { buildIcpSummary } from "../utils/icp-summary";
 import { useLeadBuilderState } from "../hooks/use-lead-builder-state";
 import { BuilderConfigPane } from "./builder-config-pane";
 import { PredictorPanel } from "./predictor-panel";
 
 export function LeadBuilder() {
+  const router = useRouter();
+  const { tenantId } = useTenant();
   const {
     state,
     addIndustry,
@@ -26,6 +31,14 @@ export function LeadBuilder() {
     toggleTrigger,
     refreshSample,
   } = useLeadBuilderState();
+
+  // Hand the built audience off to a new draft campaign (Discover → Act).
+  const handleCreateCampaign = () => {
+    const icp = buildIcpSummary(state, TECH_CATALOG);
+    router.push(
+      `/org/${tenantId}/campaigns/new?icp=${encodeURIComponent(icp)}`
+    );
+  };
 
   return (
     <div className="flex h-full">
@@ -79,9 +92,12 @@ export function LeadBuilder() {
             <Button variant="outline" className="font-bold">
               Save as Draft
             </Button>
-            <Button className="gap-2 font-bold shadow-lg shadow-primary/30">
-              Launch Campaign
-              <Rocket className="size-4" />
+            <Button
+              className="gap-2 font-bold shadow-lg shadow-primary/30"
+              onClick={handleCreateCampaign}
+            >
+              Create Campaign
+              <ArrowRight className="size-4" />
             </Button>
           </div>
         </footer>
