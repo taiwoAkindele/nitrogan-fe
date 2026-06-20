@@ -3,7 +3,6 @@ import type {
   TechItem,
   IntentTrigger,
   SampleLead,
-  PredictionStats,
 } from "../types";
 
 export const AVAILABLE_INDUSTRIES = [
@@ -85,12 +84,6 @@ export const MOCK_SAMPLE_LEADS: SampleLead[] = [
     matchScore: 7.9,
   },
 ];
-
-export const MOCK_PREDICTION: PredictionStats = {
-  confidence: 92,
-  velocity: "High",
-  reachPerMonth: 180,
-};
 
 export const DEFAULT_BUILDER_STATE: BuilderState = {
   industries: ["Fintech", "Logistics"],

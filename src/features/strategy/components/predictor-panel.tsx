@@ -32,7 +32,9 @@ export function PredictorPanel({
             {/* Headline */}
             <h2 className="text-3xl font-bold leading-tight">
               Reach{" "}
-              <span className="italic text-primary">~45 high-intent</span>{" "}
+              <span className="italic text-primary">
+                ~{prediction.leadsPerWeek} high-intent
+              </span>{" "}
               leads per week
             </h2>
 
@@ -73,7 +75,7 @@ export function PredictorPanel({
               <p className="text-xs font-medium text-white/70">
                 Optimization Level
               </p>
-              <p className="text-2xl font-bold">Peak Performance</p>
+              <p className="text-2xl font-bold">{prediction.optimizationLabel}</p>
             </div>
           </div>
         </div>

@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { Shield, Clock, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -10,9 +11,9 @@ import {
   TECH_CATALOG,
   INTENT_TRIGGER_OPTIONS,
   MOCK_SAMPLE_LEADS,
-  MOCK_PREDICTION,
 } from "../utils/mock-data";
 import { buildIcpSummary } from "../utils/icp-summary";
+import { computePrediction } from "../utils/prediction";
 import { useLeadBuilderState } from "../hooks/use-lead-builder-state";
 import { BuilderConfigPane } from "./builder-config-pane";
 import { PredictorPanel } from "./predictor-panel";
@@ -31,6 +32,9 @@ export function LeadBuilder() {
     toggleTrigger,
     refreshSample,
   } = useLeadBuilderState();
+
+  // Recomputes whenever the ICP changes, so the prediction is genuinely live.
+  const prediction = useMemo(() => computePrediction(state), [state]);
 
   // Hand the built audience off to a new draft campaign (Discover → Act).
   const handleCreateCampaign = () => {
@@ -70,7 +74,7 @@ export function LeadBuilder() {
 
         <div className="relative z-10 flex-1 overflow-y-auto p-8">
           <PredictorPanel
-            prediction={MOCK_PREDICTION}
+            prediction={prediction}
             sampleLeads={MOCK_SAMPLE_LEADS}
             onRefreshSample={refreshSample}
           />
@@ -85,7 +89,7 @@ export function LeadBuilder() {
             </div>
             <div className="flex items-center gap-2">
               <Clock className="size-4" />
-              <span>Updated 2m ago</span>
+              <span>Live estimate</span>
             </div>
           </div>
           <div className="flex items-center gap-3">

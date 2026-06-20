@@ -104,12 +104,25 @@ targeting, and "new" is a placeholder id rather than a created record.
 
 ### 2.4 Predictions and trust signals are hard-coded
 "~45 high-intent leads/week," "Peak Performance," "Confidence 94%,"
-"Trusted by 500+ teams," and "Updated 2m ago" are all static.
+"Trusted by 500+ teams," and "Updated 2m ago" were all static.
 - **Credibility:** sophisticated buyers will test these; a confidence score that never
   moves erodes trust quickly.
 - **Factual-claim risk:** "Trusted by 500+ sales teams globally"
   (`HeroSection.tsx`) is a concrete claim. If untrue at launch, replace with neutral /
   aspirational copy until it is real.
+
+**Resolved (2026-06-20, mock data):**
+- **Predictor is now reactive.** `strategy/utils/prediction.ts` derives reach,
+  confidence, velocity, leads/week, and the optimization label from the ICP builder
+  state (`computePrediction`, recomputed via `useMemo`). The model encodes the real
+  trade-off — broader targeting raises reach; each tech/intent requirement narrows reach
+  but raises confidence. The hard-coded "~45/week" literal and frozen `MOCK_PREDICTION`
+  are gone, so the "Real-time Prediction" label is now earned.
+- **Public claim de-risked.** "Trusted by 500+ sales teams globally" → "Built for modern
+  B2B sales teams"; the builder footer's fake "Updated 2m ago" → "Live estimate".
+
+Left as mock (clearly account data a backend will populate, not public claims): the
+dashboard network stats and the intent-score trend bars.
 
 ### 2.5 No measurement of the thing being sold: outcomes
 The product sells **meetings booked / pipeline**. The dashboard shows sent/replies/

@@ -30,4 +30,6 @@ export interface PredictionStats {
   confidence: number;
   velocity: string;
   reachPerMonth: number;
+  leadsPerWeek: number;
+  optimizationLabel: string;
 }
