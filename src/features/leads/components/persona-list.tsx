@@ -1,4 +1,5 @@
 import { Mail } from "lucide-react";
+import { Avatar } from "@/components/ui/avatar";
 import type { Persona } from "../types";
 
 interface PersonaListProps {
@@ -14,9 +15,7 @@ export function PersonaList({ personas }: PersonaListProps) {
       <div className="space-y-4">
         {personas.map((persona) => (
           <div key={persona.id} className="flex items-center gap-3">
-            <div className="flex size-10 items-center justify-center rounded-full bg-muted text-sm font-bold">
-              {persona.name.charAt(0)}
-            </div>
+            <Avatar name={persona.name} size="md" shape="circle" className="bg-muted" />
             <div className="min-w-0 flex-1">
               <p className="text-sm font-bold">{persona.name}</p>
               <p className="text-xs text-muted-foreground">{persona.role}</p>

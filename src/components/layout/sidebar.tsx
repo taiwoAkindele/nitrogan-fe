@@ -5,20 +5,17 @@ import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
   Inbox,
-  Users,
   Lightbulb,
-  BarChart3,
   Settings,
   Rocket,
 } from "lucide-react";
 import { useTenant } from "@/lib/tenant/context";
 
+// Ordered by the product loop: Discover → Review → Act.
 const NAV_ITEMS = [
   { label: "Dashboard", icon: LayoutDashboard, href: "" },
+  { label: "Discovery", icon: Lightbulb, href: "/strategy" },
   { label: "Sales Inbox", icon: Inbox, href: "/leads" },
-  { label: "Prospects", icon: Users, href: "/workspace" },
-  { label: "Intelligence", icon: Lightbulb, href: "/strategy" },
-  { label: "Reports", icon: BarChart3, href: "/integrations" },
 ];
 
 export function Sidebar() {

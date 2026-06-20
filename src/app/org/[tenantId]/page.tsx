@@ -1,5 +1,5 @@
-import { SalesInbox } from "@/features/leads";
+import { CampaignDashboard } from "@/features/campaigns";
 
 export default function DashboardPage() {
-  return <SalesInbox />;
+  return <CampaignDashboard />;
 }

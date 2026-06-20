@@ -1,9 +1,12 @@
+import { Avatar } from "@/components/ui/avatar";
+import { Badge, type BadgeTone } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 import type { Prospect } from "../types";
 
-const INTENT_STYLES: Record<string, string> = {
-  High: "bg-green-500/10 text-green-500",
-  Medium: "bg-yellow-500/10 text-yellow-600",
-  Low: "bg-muted text-muted-foreground",
+const INTENT_TONES: Record<Prospect["intentLabel"], BadgeTone> = {
+  High: "high",
+  Medium: "medium",
+  Low: "neutral",
 };
 
 interface ProspectCardProps {
@@ -18,13 +21,13 @@ export function ProspectCard({
   onSelect,
 }: ProspectCardProps) {
   return (
-    <div
+    <button
+      type="button"
       onClick={() => onSelect(prospect.id)}
-      className={`relative cursor-pointer border-b border-border p-4 transition-colors ${
-        isSelected
-          ? "bg-primary/5"
-          : "hover:bg-muted/50"
-      }`}
+      className={cn(
+        "relative block w-full border-b border-border p-4 text-left transition-colors",
+        isSelected ? "bg-primary/5" : "hover:bg-muted/50"
+      )}
     >
       {isSelected && (
         <div className="absolute bottom-0 left-0 top-0 w-1 bg-primary" />
@@ -32,11 +35,12 @@ export function ProspectCard({
 
       <div className="mb-2 flex items-start justify-between">
         <div className="flex items-center gap-3">
-          <div
-            className={`flex size-10 items-center justify-center rounded-lg text-sm font-bold text-white ${prospect.avatarColor}`}
-          >
-            {prospect.companyInitial}
-          </div>
+          <Avatar
+            initials={prospect.companyInitial}
+            size="md"
+            shape="rounded"
+            className={cn("text-white", prospect.avatarColor)}
+          />
           <div>
             <h4 className="text-sm font-bold">{prospect.companyName}</h4>
             <p className="text-xs text-muted-foreground">
@@ -44,11 +48,9 @@ export function ProspectCard({
             </p>
           </div>
         </div>
-        <span
-          className={`rounded px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${INTENT_STYLES[prospect.intentLabel]}`}
-        >
+        <Badge tone={INTENT_TONES[prospect.intentLabel]} uppercase>
           {prospect.intentLabel === "High" ? "High Intent" : prospect.intentLabel}
-        </span>
+        </Badge>
       </div>
 
       <p className="mb-3 line-clamp-2 text-xs text-muted-foreground">
@@ -59,6 +61,6 @@ export function ProspectCard({
         <span>Signals: {prospect.signalCount} active</span>
         <span>{prospect.timestamp}</span>
       </div>
-    </div>
+    </button>
   );
 }

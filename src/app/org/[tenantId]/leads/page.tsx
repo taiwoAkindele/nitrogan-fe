@@ -1,7 +1,5 @@
-export default function AnalyticsPage() {
-  return (
-    <div>
-      <h1>Analytics</h1>
-    </div>
-  );
+import { SalesInbox } from "@/features/leads";
+
+export default function LeadsPage() {
+  return <SalesInbox />;
 }
