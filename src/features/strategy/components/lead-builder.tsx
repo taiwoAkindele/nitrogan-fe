@@ -36,6 +36,11 @@ export function LeadBuilder() {
   // Recomputes whenever the ICP changes, so the prediction is genuinely live.
   const prediction = useMemo(() => computePrediction(state), [state]);
 
+  // No targeting dimensions → no audience, so the sample preview is empty too.
+  const hasAudience =
+    state.industries.length > 0 && state.geographies.length > 0;
+  const sampleLeads = hasAudience ? MOCK_SAMPLE_LEADS : [];
+
   // Hand the built audience off to a new draft campaign (Discover → Act).
   const handleCreateCampaign = () => {
     const icp = buildIcpSummary(state, TECH_CATALOG);
@@ -75,7 +80,7 @@ export function LeadBuilder() {
         <div className="relative z-10 flex-1 overflow-y-auto p-8">
           <PredictorPanel
             prediction={prediction}
-            sampleLeads={MOCK_SAMPLE_LEADS}
+            sampleLeads={sampleLeads}
             onRefreshSample={refreshSample}
           />
         </div>

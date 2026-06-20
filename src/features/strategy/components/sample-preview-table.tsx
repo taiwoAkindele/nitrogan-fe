@@ -1,7 +1,8 @@
-import { RefreshCw } from "lucide-react";
+import { RefreshCw, SearchX } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar } from "@/components/ui/avatar";
 import { Badge, type BadgeTone } from "@/components/ui/badge";
+import { EmptyState } from "@/components/ui/empty-state";
 import type { SampleLead } from "../types";
 
 const MAX_MATCH_SCORE = 10;
@@ -36,8 +37,19 @@ export function SamplePreviewTable({
         </Button>
       </div>
 
-      <div className="overflow-hidden rounded-xl border border-border bg-card">
-        <table className="w-full text-left text-sm">
+      {leads.length === 0 ? (
+        <div className="rounded-xl border border-border bg-card">
+          <EmptyState className="h-auto flex-col gap-2 py-12">
+            <SearchX className="size-6 text-muted-foreground/60" />
+            <span>No matching companies yet.</span>
+            <span className="text-xs">
+              Add at least one industry and region to preview leads.
+            </span>
+          </EmptyState>
+        </div>
+      ) : (
+        <div className="overflow-hidden rounded-xl border border-border bg-card">
+          <table className="w-full text-left text-sm">
           <thead>
             <tr className="border-b border-border bg-muted/50 text-muted-foreground">
               <th className="px-6 py-3 font-bold">Company</th>
@@ -80,8 +92,9 @@ export function SamplePreviewTable({
               </tr>
             ))}
           </tbody>
-        </table>
-      </div>
+          </table>
+        </div>
+      )}
     </div>
   );
 }

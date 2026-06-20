@@ -6,6 +6,7 @@ import { PlusCircle, Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { TabBar, type TabItem } from "@/components/ui/tab-bar";
+import { EmptyState } from "@/components/ui/empty-state";
 import { useTenant } from "@/lib/tenant/context";
 
 import type { CampaignStatus } from "../types";
@@ -70,6 +71,15 @@ export function CampaignDashboard() {
 
       {/* Campaign Grid */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {filteredCampaigns.length === 0 && (
+          <div className="md:col-span-2 lg:col-span-3">
+            <EmptyState className="h-auto rounded-xl border border-dashed border-border py-12">
+              {activeTab === "all"
+                ? "No campaigns yet — create your first below."
+                : `No ${activeTab} campaigns.`}
+            </EmptyState>
+          </div>
+        )}
         {filteredCampaigns.map((campaign) => (
           <CampaignCard
             key={campaign.id}

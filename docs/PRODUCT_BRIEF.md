@@ -146,9 +146,14 @@ prospect list and an account-level conversion view.
 ## 3. Smaller, high-leverage gaps
 
 - **Empty / loading / error states.** With real data these become ~80% of perceived
-  quality. An `empty-state` component exists (`src/components/ui/empty-state.tsx`) —
-  ensure every list (inbox tabs, campaigns, sample preview) uses it. Mock data hides
-  this today.
+  quality. An `empty-state` component exists (`src/components/ui/empty-state.tsx`).
+  **Empty states done (2026-06-20):** inbox tabs and the approval queue already had
+  them; added empty states to the **Sample Preview** (and wired it to the live
+  prediction — no industries/regions selected → empty sample, not a headerless table)
+  and the **campaign dashboard** grid (empty filter tab now shows a message instead of
+  only the create card). **Loading / error states still open** — they need a real data
+  layer to be meaningful (everything is currently synchronous mock data); add them when
+  the React Query fetch hooks land.
 - **Sales Inbox lacks search / sort / bulk actions.** Reps live in this view; it will
   not scale past ~50 prospects without filtering by signal type, intent, and recency.
 - **No "why this lead" explainability.** Signals and an intent score are shown, but not
