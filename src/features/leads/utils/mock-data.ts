@@ -10,7 +10,7 @@ export const MOCK_PROSPECTS: ProspectDetail[] = [
     employeeRange: "500-1k",
     intentLabel: "High",
     signalCount: 8,
-    signalSummary: "Recently raised $40M Series B. CTO mentioned Nitrogan on LinkedIn 2h ago.",
+    signalSummary: "Recently raised $40M Series B. CTO posted about scaling their data stack on LinkedIn 2h ago.",
     timestamp: "2 min ago",
     status: "new",
     description: "Cloud Infrastructure Management & Security",

@@ -222,7 +222,7 @@ export default function SignUpPage() {
 
       {/* Footer */}
       <footer className="flex flex-col items-center justify-between gap-4 border-t border-border px-10 py-8 text-sm text-muted-foreground md:flex-row">
-        <p>&copy; 2024 Nitrogan Systems Inc. All rights reserved.</p>
+        <p>&copy; 2026 Nitrogan Inc. All rights reserved.</p>
         <div className="flex gap-6">
           <Link href="#" className="transition-colors hover:text-primary">
             Documentation

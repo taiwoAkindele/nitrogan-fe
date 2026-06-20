@@ -1,0 +1,130 @@
+# Product Brief — Nitrogan (working name)
+
+> Status: Draft for review · Prepared as a PM review of the current front-end (`Doro-FE`)
+> Last updated: 2026-06-20
+
+This brief captures what the product is today, the strategic risks worth addressing
+before launch, and a recommended sequence of work. It is based on a review of the
+current codebase, which is a front-end shell running on mock data
+(`src/features/**/utils/mock-data.ts`), with no backend wired in yet (the only
+stateful interaction — prospect status changes in the Sales Inbox — has a
+`// TODO: server call`).
+
+---
+
+## 1. What the product is
+
+A **B2B sales-intelligence / lead-discovery platform**. The core product loop is
+coherent and already reflected in the navigation (`src/components/layout/sidebar.tsx`):
+
+**Discover → Review → Act**
+
+| Stage | Surface | What it does |
+| --- | --- | --- |
+| **Discover** | Discovery / Lead Builder (`/strategy`) | Define an ICP (industries, geographies, company size, tech stack, intent triggers); see a real-time prediction of reachable high-intent leads and a sample preview. |
+| **Review** | Sales Inbox (`/leads`) | Triage prospects across tabs (new / saved / active / archive); open a per-prospect intelligence panel with intent score, signals, personas, and firmographics. |
+| **Act** | Campaigns (`/`, dashboard) | Deploy and monitor AI outreach "bots" with sent/reply/meeting metrics. |
+
+The app is **multi-tenant** (`/org/[tenantId]`) and the design language is strong and
+consistent.
+
+---
+
+## 2. Top issues (priority order)
+
+### 2.1 Identity crisis — pick one name and a sharper category
+**Resolved (2026-06-20):** canonical brand is **Nitrogan**; legal entity is
+**Nitrogan Inc.** The UI already used "Nitrogan" consistently, so the fix was to align
+the supporting files: README title, standardized all footers to "© 2026 Nitrogan Inc.",
+and removed a stray product self-reference from mock prospect data. One manual step
+remains: the working folder is still `Doro-FE` and `package.json` is `nitrogan-fe` —
+rename the directory/package if you want the filesystem to match the brand (left alone
+to avoid breaking the active workspace path).
+
+Original finding: three names were in play — `Doro` (folder), `nitrogan-fe`
+(`package.json`), and `Nitrogan` (UI copy). Deciding early is cheap; after launch it is
+expensive (URLs, email domains, CRM integration naming, SEO).
+
+Strategically, "B2B discovery engine" is a crowded category (ZoomInfo, Apollo, Clay,
+Clearbit). The differentiated wedge already present in the product copy is **market
+signals → pre-written outreach context** ("decode signals before competitors know they
+exist"). **Lead with timing/intent, not data.** Data is a commodity; signal-driven
+timing is a wedge.
+
+### 2.2 The "Act" step is a black box — and the riskiest claim
+Campaigns are framed as autonomous "AI bots" sending outreach at "high velocity / at
+scale." This is the part buyers are most nervous about (deliverability, sending-domain
+reputation, anti-spam law, brand risk). Currently missing:
+- Message review / approval gate before sends
+- Sequence / step editor
+- Deliverability and sending-domain controls
+- Compliance guardrails on the **sending** side (GDPR is shown on sourcing, not outreach)
+
+**Recommendation:** for v1, reposition bots as *assisted* (human-in-the-loop), not
+*autonomous*. Safer and easier to sell to sales leaders who fear a bot harming their
+domain reputation.
+
+### 2.3 The loop has a missing seam: Discover → Act is disconnected
+"Launch Campaign" in the Lead Builder (`lead-builder.tsx`) and "Create New Bot" in
+Campaigns (`campaign-dashboard.tsx`) are separate entry points. A user who carefully
+builds an audience should flow **directly** into a campaign seeded with that audience.
+Today the built segment and the launched campaign do not visibly connect. **This is the
+#1 UX/product gap in the core loop.**
+
+### 2.4 Predictions and trust signals are hard-coded
+"~45 high-intent leads/week," "Peak Performance," "Confidence 94%,"
+"Trusted by 500+ teams," and "Updated 2m ago" are all static.
+- **Credibility:** sophisticated buyers will test these; a confidence score that never
+  moves erodes trust quickly.
+- **Factual-claim risk:** "Trusted by 500+ sales teams globally"
+  (`HeroSection.tsx`) is a concrete claim. If untrue at launch, replace with neutral /
+  aspirational copy until it is real.
+
+### 2.5 No measurement of the thing being sold: outcomes
+The product sells **meetings booked / pipeline**. The dashboard shows sent/replies/
+meetings per bot, but there is no account-level **lead-quality feedback** (did
+discovered leads convert?) and no way for a rep to mark a lead good/bad. That feedback
+loop is what makes "predictive scoring" real over time — and it is the **moat**. Build
+the rating mechanism early, even with a naive model behind it.
+
+---
+
+## 3. Smaller, high-leverage gaps
+
+- **Empty / loading / error states.** With real data these become ~80% of perceived
+  quality. An `empty-state` component exists (`src/components/ui/empty-state.tsx`) —
+  ensure every list (inbox tabs, campaigns, sample preview) uses it. Mock data hides
+  this today.
+- **Sales Inbox lacks search / sort / bulk actions.** Reps live in this view; it will
+  not scale past ~50 prospects without filtering by signal type, intent, and recency.
+- **No "why this lead" explainability.** Signals and an intent score are shown, but not
+  which signals drove the score. That explanation is the bridge to "pre-written
+  outreach context" — connect them.
+- **Settings is a dead icon** in the sidebar. Team/seat management, integrations, and
+  sending configuration need a home; scaffold it.
+- **CRM integration is a headline feature** (Salesforce / HubSpot / Outreach,
+  `FeaturesSection.tsx`) but absent from the app. For this buyer, "does it sync to my
+  CRM?" is often a deal-breaker — even a "Connect / coming soon" stub sets expectations.
+
+---
+
+## 4. Recommended sequence
+
+1. **Lock branding + positioning** (~1 day; unblocks everything downstream).
+2. **Wire one vertical slice to a real backend** — Discovery → save segment → Inbox
+   shows real prospects. Proves the architecture and removes the "demo-ware" risk.
+3. **Connect Discover → Act** so a built audience seeds a campaign (closes the missing
+   seam in §2.3).
+4. **Add human-in-the-loop approval to bots** before any real sending (§2.2).
+5. **Add a lead-quality feedback control** in the Sales Inbox to start collecting the
+   data the scoring model needs (§2.5).
+
+---
+
+## 5. Open questions
+
+- What is the canonical product name and primary domain?
+- Is outreach sending in-scope for v1, or is the wedge discovery + CRM sync only?
+- Which CRM is the launch integration priority?
+- What is the real data source for signals, and what freshness can we honestly claim?
+- Single-rep self-serve or team/enterprise as the initial GTM motion?
