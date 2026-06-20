@@ -189,7 +189,48 @@ prospect list and an account-level conversion view.
 
 ---
 
-## 4. Recommended sequence
+## 4. Responsive design plan (planned — not yet built)
+
+The landing page handles `lg:` breakpoints; the **app shell behind login has no
+responsive handling**. The app is desktop-first and multi-pane, so the work is graceful
+collapse, not a mobile-first rewrite.
+
+**Breakpoint bands & intent** (Tailwind defaults):
+- **Small** (`< md`, phones) — *review-on-the-go only* (decided 2026-06-20): read inbox,
+  check campaigns, approve messages, sync a lead. Not deep ICP-building.
+- **Medium** (`md–lg`, tablets/small laptops) — fully usable, denser/stacked.
+- **Large** (`≥ lg`, desktop) — current design, unchanged.
+
+**Four layouts assume a wide viewport** (the real risk):
+- App shell (`org/[tenantId]/layout.tsx`): fixed `w-64` sidebar, no drawer; topbar `w-96`
+  search overflows.
+- Sales Inbox: `w-[400px]` list + flex detail, detail internally `grid-cols-12` (8/4).
+- Lead Builder: `w-[420px]` config + flex predictor, both `h-full`.
+- Intelligence header: 3 action buttons + meta row cramp on narrow.
+- (Campaign dashboard, campaign detail, Settings are mostly fine — responsive grids /
+  `md:flex-row` already.)
+
+**Planned behavior:**
+- **Nav shell (P0):** sidebar → persistent (lg) / 64px icon rail (md) / off-canvas drawer
+  (sm); **bottom tab bar on small** for the 3 primary destinations; topbar search
+  collapses to an icon, "New Discovery" → icon-only, hamburger added on small.
+- **Sales Inbox (P0):** lg side-by-side → md narrow list + detail sub-grid stacks → sm
+  **one-view-at-a-time** (list, tap pushes full-screen detail with back; reuses
+  `selectedProspectId`).
+- **Lead Builder (P1):** md/sm single scroll column, sticky footer action bar; on sm lead
+  with the prediction and put filters behind an "Edit audience" sheet.
+- **Intelligence header + sub-grid (P1):** buttons wrap→stack; `grid-cols-12` → single
+  column below lg.
+- **P2:** Settings/campaign-detail `sm:grid-cols-2` → 1 col; Sample Preview table scrolls
+  horizontally on small.
+- **Touch:** 44px min targets (bulk-select checkboxes, tab hit areas); tap replaces hover.
+
+**Rollout:** P0 nav shell → P0 Sales Inbox → P1 Lead Builder → P1 header/sub-grid →
+P2 minor stacking. Verify at 375 / 768 / 1280px.
+
+---
+
+## 5. Recommended sequence
 
 1. **Lock branding + positioning** (~1 day; unblocks everything downstream).
 2. **Wire one vertical slice to a real backend** — Discovery → save segment → Inbox
@@ -202,7 +243,7 @@ prospect list and an account-level conversion view.
 
 ---
 
-## 5. Open questions
+## 6. Open questions
 
 - What is the canonical product name and primary domain?
 - Is outreach sending in-scope for v1, or is the wedge discovery + CRM sync only?
