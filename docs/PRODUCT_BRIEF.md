@@ -154,8 +154,15 @@ prospect list and an account-level conversion view.
   only the create card). **Loading / error states still open** — they need a real data
   layer to be meaningful (everything is currently synchronous mock data); add them when
   the React Query fetch hooks land.
-- **Sales Inbox lacks search / sort / bulk actions.** Reps live in this view; it will
-  not scale past ~50 prospects without filtering by signal type, intent, and recency.
+- **Sales Inbox lacks search / sort / bulk actions.** Reps live in this view; it would
+  not scale past ~50 prospects. **Done (2026-06-20):** added a toolbar to the prospect
+  list — search (company/industry), sort (highest intent / most signals / company A–Z),
+  and an intent filter (All/High/Medium/Low), all via a themed `DropdownMenu` (native
+  `<select>` popups were unstyleable). Added **bulk actions**: per-row checkboxes +
+  select-all, with a selection bar to bulk-move (Save / Active / Archive) wired through
+  `SalesInbox` (`handleBulkStatusChange`, optimistic, `// TODO` server). Selection clears
+  on tab change. *Recency sort / signal-type filter deferred — the prospect model has no
+  sortable timestamp or first-class signal-type facet yet.*
 - **No "why this lead" explainability.** Signals and an intent score are shown, but not
   which signals drove the score. That explanation is the bridge to "pre-written
   outreach context" — connect them.

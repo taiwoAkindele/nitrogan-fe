@@ -37,6 +37,18 @@ export function SalesInbox() {
     // TODO: server call — e.g. api(`/prospects/${prospectId}/status`, { method: "PATCH", body: JSON.stringify({ status: newStatus }) })
   };
 
+  const handleBulkStatusChange = (
+    ids: string[],
+    newStatus: ProspectStatus
+  ) => {
+    const idSet = new Set(ids);
+    setProspects((prev) =>
+      prev.map((p) => (idSet.has(p.id) ? { ...p, status: newStatus } : p))
+    );
+
+    // TODO: server call — bulk PATCH /prospects/status
+  };
+
   const handleRateLead = (prospectId: string, feedback: LeadFeedback) => {
     // Clicking the active rating again clears it.
     setProspects((prev) =>
@@ -59,6 +71,7 @@ export function SalesInbox() {
         onTabChange={setActiveTab}
         selectedId={selectedProspectId}
         onSelect={setSelectedProspectId}
+        onBulkStatusChange={handleBulkStatusChange}
       />
       <IntelligenceDetailPanel
         prospect={selectedProspect}
