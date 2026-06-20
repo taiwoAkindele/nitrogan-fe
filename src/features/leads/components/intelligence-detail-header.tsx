@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import {
   MapPin,
   Link as LinkIcon,
@@ -6,6 +9,7 @@ import {
   Mail,
   Calendar,
   RefreshCw,
+  Check,
   Bookmark,
   MoreHorizontal,
   CirclePlay,
@@ -31,6 +35,11 @@ export function IntelligenceDetailHeader({
   prospect,
   onStatusChange,
 }: IntelligenceDetailHeaderProps) {
+  // Tracks which prospect was last synced, so switching prospects resets the
+  // button without an effect. TODO: server call to the connected CRM.
+  const [syncedId, setSyncedId] = useState<string | null>(null);
+  const isSynced = syncedId === prospect.id;
+
   return (
     <div className="border-b border-border bg-card p-8">
       <div className="mb-8 flex items-start justify-between">
@@ -113,9 +122,22 @@ export function IntelligenceDetailHeader({
           <Calendar className="size-5" />
           Book Meeting
         </Button>
-        <Button variant="outline" className="flex-1 gap-2 font-bold">
-          <RefreshCw className="size-5" />
-          Sync to CRM
+        <Button
+          variant="outline"
+          className="flex-1 gap-2 font-bold"
+          onClick={() => setSyncedId(prospect.id)}
+        >
+          {isSynced ? (
+            <>
+              <Check className="size-5 text-emerald-500" />
+              Synced to CRM
+            </>
+          ) : (
+            <>
+              <RefreshCw className="size-5" />
+              Sync to CRM
+            </>
+          )}
         </Button>
       </div>
     </div>

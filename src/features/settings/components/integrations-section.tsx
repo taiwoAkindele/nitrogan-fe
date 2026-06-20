@@ -1,13 +1,33 @@
+"use client";
+
+import { useState } from "react";
 import { Plug } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import type { Integration } from "../types";
 import { INTEGRATIONS } from "../utils/mock-data";
 
 export function IntegrationsSection() {
+  const [integrations, setIntegrations] =
+    useState<Integration[]>(INTEGRATIONS);
+
+  // Mock connect/disconnect. TODO: real OAuth flow + server call.
+  const toggleConnection = (id: string) =>
+    setIntegrations((prev) =>
+      prev.map((i) =>
+        i.id === id
+          ? {
+              ...i,
+              status: i.status === "connected" ? "not_connected" : "connected",
+            }
+          : i
+      )
+    );
+
   return (
     <div className="grid gap-4 sm:grid-cols-2">
-      {INTEGRATIONS.map((integration) => {
+      {integrations.map((integration) => {
         const connected = integration.status === "connected";
         return (
           <div
@@ -18,7 +38,7 @@ export function IntegrationsSection() {
               <div className="flex size-10 items-center justify-center rounded-lg bg-muted text-muted-foreground">
                 <Plug className="size-5" />
               </div>
-              <Badge tone={connected ? "success" : "neutral"} shape="pill">
+              <Badge tone={connected ? "success" : "neutral"} shape="pill" dot={connected}>
                 {connected ? "Connected" : "Not connected"}
               </Badge>
             </div>
@@ -31,8 +51,9 @@ export function IntegrationsSection() {
             <Button
               variant={connected ? "outline" : "default"}
               className="font-bold"
+              onClick={() => toggleConnection(integration.id)}
             >
-              {connected ? "Manage" : "Connect"}
+              {connected ? "Disconnect" : "Connect"}
             </Button>
           </div>
         );

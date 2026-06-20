@@ -179,8 +179,13 @@ prospect list and an account-level conversion view.
   daily send cap — the home for issue 2's deferred deliverability config). Structure is
   real; the actions are stubs pending a backend.
 - **CRM integration is a headline feature** (Salesforce / HubSpot / Outreach,
-  `FeaturesSection.tsx`) but absent from the app. For this buyer, "does it sync to my
-  CRM?" is often a deal-breaker — even a "Connect / coming soon" stub sets expectations.
+  `FeaturesSection.tsx`) but was absent from the app. **Done (2026-06-20):** the
+  Settings → Integrations section now connects/disconnects each provider (mock state,
+  connected providers show a live status dot), and the prospect header's previously-dead
+  **"Sync to CRM"** button now works — clicking it flips to "Synced to CRM ✓" per
+  prospect (resets when you switch leads). Sets the buyer expectation at both the config
+  home and the per-lead action. *Still open (backend): real OAuth connect flow and an
+  actual sync to the connected CRM (`// TODO`s mark both call sites).*
 
 ---
 
