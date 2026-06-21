@@ -1,0 +1,58 @@
+name: Security
+
+# Runs on every push (any branch) and every pull request, so threats are
+# caught no matter where they land. Pair with branch protection (require these
+# checks to pass) so a failing scan blocks merges into main/dev.
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+  pull-requests: write # Gitleaks reads PR commits (and comments on findings)
+
+jobs:
+  secret-scan:
+    name: Secrets (Gitleaks)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # full history so the whole commit range is scanned
+      - name: Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  vuln-scan:
+    name: Vulnerabilities & misconfig (Trivy)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Trivy filesystem scan
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          scan-type: fs
+          scanners: vuln,secret,misconfig
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+          exit-code: "1" # fail the job (and the check) when something is found
+
+  malware-scan:
+    name: Malware (ClamAV)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install ClamAV + update signatures
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clamav
+          sudo systemctl stop clamav-freshclam 2>/dev/null || true
+          sudo freshclam
+      - name: Scan repository
+        # clamscan exits non-zero when an infected file is found, failing the job.
+        run: |
+          clamscan -r --infected \
+            --exclude-dir='^\.git' \
+            --exclude-dir='node_modules' \
+            .
