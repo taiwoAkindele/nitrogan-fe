@@ -7,7 +7,7 @@ import { PlusCircle, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { TabBar, type TabItem } from "@/components/ui/tab-bar";
 import { EmptyState } from "@/components/ui/empty-state";
-import { useTenant } from "@/lib/tenant/context";
+import { useWorkspace } from "@/lib/workspace/context";
 
 import type { CampaignStatus } from "../types";
 import { MOCK_CAMPAIGNS, MOCK_NETWORK_STATS } from "../utils/mock-data";
@@ -17,7 +17,7 @@ import { NetworkStatsBanner } from "./network-stats-banner";
 type TabFilter = "all" | CampaignStatus;
 
 export function CampaignDashboard() {
-  const { tenantId } = useTenant();
+  const { slug } = useWorkspace();
   const [activeTab, setActiveTab] = useState<TabFilter>("all");
 
   const campaigns = MOCK_CAMPAIGNS;
@@ -53,7 +53,7 @@ export function CampaignDashboard() {
         <Button
           size="lg"
           className="gap-2 font-bold tracking-wide shadow-lg shadow-primary/20"
-          render={<Link href={`/org/${tenantId}/strategy`} />}
+          render={<Link href={`/org/${slug}/strategy`} />}
         >
           <PlusCircle className="size-5" />
           Create New Bot
@@ -84,13 +84,13 @@ export function CampaignDashboard() {
           <CampaignCard
             key={campaign.id}
             campaign={campaign}
-            href={`/org/${tenantId}/campaigns/${campaign.id}`}
+            href={`/org/${slug}/campaigns/${campaign.id}`}
           />
         ))}
 
         {/* New Automation Card */}
         <Link
-          href={`/org/${tenantId}/strategy`}
+          href={`/org/${slug}/strategy`}
           className="group flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-border p-10 text-center transition-colors hover:bg-muted/40"
         >
           <div className="mb-4 flex size-12 items-center justify-center rounded-full bg-muted text-muted-foreground transition-all group-hover:bg-primary/10 group-hover:text-primary">

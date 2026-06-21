@@ -274,8 +274,14 @@ table) rather than a single `user.organization_id`, so agencies can be enabled l
 won't need repainting. Build the actual flow only when an agency segment demands it.
 
 **Naming / routing notes:** user-facing term is **"Workspace" / "Organization,"** never
-"tenant" (architecture word). Prefer a human **slug** over the raw `tenantId` in URLs
-(current routing is `/org/[tenantId]`).
+"tenant" (architecture word). Prefer a human **slug** over the raw `tenantId` in URLs.
+
+**Implemented (2026-06-21):** route segment renamed `/org/[tenantId]` → `/org/[slug]`;
+the `lib/tenant` context became `lib/workspace` (`WorkspaceProvider` / `useWorkspace`
+exposing `{ slug }`); all consumers and link builders updated to `slug`; sign-in still
+redirects to `/org/default` (the placeholder workspace slug). No `tenant` references
+remain in `src`. (A real backend would resolve the slug → workspace and could add a
+display name; not needed for the mock.)
 
 ---
 

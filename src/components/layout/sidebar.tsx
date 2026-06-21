@@ -9,7 +9,7 @@ import {
   Settings,
   Rocket,
 } from "lucide-react";
-import { useTenant } from "@/lib/tenant/context";
+import { useWorkspace } from "@/lib/workspace/context";
 import { cn } from "@/lib/utils";
 
 // Ordered by the product loop: Discover → Review → Act.
@@ -33,9 +33,9 @@ interface SidebarProps {
 //  - focus rail (`collapsed`): 64px icon rail at any width
 //  - default: 64px rail at md, full icon + label at lg
 export function Sidebar({ expanded, collapsed, onNavigate }: SidebarProps) {
-  const { tenantId } = useTenant();
+  const { slug } = useWorkspace();
   const pathname = usePathname();
-  const basePath = `/org/${tenantId}`;
+  const basePath = `/org/${slug}`;
 
   // `expanded` always wins; `collapsed` forces the rail; otherwise responsive.
   const label = expanded ? "inline" : collapsed ? "hidden" : "hidden lg:inline";

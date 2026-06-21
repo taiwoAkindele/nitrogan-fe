@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Shield, Clock, ArrowRight, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { useTenant } from "@/lib/tenant/context";
+import { useWorkspace } from "@/lib/workspace/context";
 import {
   AVAILABLE_INDUSTRIES,
   AVAILABLE_GEOGRAPHIES,
@@ -21,7 +21,7 @@ import { PredictorPanel } from "./predictor-panel";
 
 export function LeadBuilder() {
   const router = useRouter();
-  const { tenantId } = useTenant();
+  const { slug } = useWorkspace();
   // Mobile only (<lg): build the ICP first, then step to the prediction + actions.
   const [step, setStep] = useState<"build" | "preview">("build");
   const {
@@ -48,7 +48,7 @@ export function LeadBuilder() {
   const handleCreateCampaign = () => {
     const icp = buildIcpSummary(state, TECH_CATALOG);
     router.push(
-      `/org/${tenantId}/campaigns/new?icp=${encodeURIComponent(icp)}`
+      `/org/${slug}/campaigns/new?icp=${encodeURIComponent(icp)}`
     );
   };
 

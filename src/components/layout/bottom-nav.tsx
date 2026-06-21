@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LayoutDashboard, Lightbulb, Inbox } from "lucide-react";
 
-import { useTenant } from "@/lib/tenant/context";
+import { useWorkspace } from "@/lib/workspace/context";
 import { cn } from "@/lib/utils";
 
 // The three primary destinations, thumb-reachable on phones. Secondary
@@ -16,9 +16,9 @@ const ITEMS = [
 ];
 
 export function BottomNav() {
-  const { tenantId } = useTenant();
+  const { slug } = useWorkspace();
   const pathname = usePathname();
-  const basePath = `/org/${tenantId}`;
+  const basePath = `/org/${slug}`;
 
   return (
     <nav className="flex h-16 shrink-0 items-stretch border-t border-border bg-card md:hidden">

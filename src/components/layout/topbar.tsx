@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Search, Bell, Plus, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useTenant } from "@/lib/tenant/context";
+import { useWorkspace } from "@/lib/workspace/context";
 
 interface TopbarProps {
   /** Opens the mobile nav drawer; rendered only below md. */
@@ -12,7 +12,7 @@ interface TopbarProps {
 }
 
 export function Topbar({ onMenuClick }: TopbarProps) {
-  const { tenantId } = useTenant();
+  const { slug } = useWorkspace();
 
   return (
     <div className="flex h-full w-full items-center gap-3 px-4 md:px-6">
@@ -44,7 +44,7 @@ export function Topbar({ onMenuClick }: TopbarProps) {
           <Bell className="size-5" />
           <span className="absolute right-2 top-2 size-2 rounded-full bg-destructive" />
         </Button>
-        <Link href={`/org/${tenantId}/strategy`}>
+        <Link href={`/org/${slug}/strategy`}>
           <Button size="sm" className="gap-2 font-bold">
             <Plus className="size-4" />
             <span className="hidden sm:inline">New Discovery</span>

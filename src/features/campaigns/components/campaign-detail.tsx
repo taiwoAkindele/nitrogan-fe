@@ -13,7 +13,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { TabBar, type TabItem } from "@/components/ui/tab-bar";
-import { useTenant } from "@/lib/tenant/context";
+import { useWorkspace } from "@/lib/workspace/context";
 import type { ApprovalMode, CampaignDetail, CampaignStatus } from "../types";
 import { ApprovalModeCard } from "./approval-mode-card";
 import { PendingReviewList } from "./pending-review-list";
@@ -41,7 +41,7 @@ interface UndoState {
 }
 
 export function CampaignDetailView({ campaign }: CampaignDetailViewProps) {
-  const { tenantId } = useTenant();
+  const { slug } = useWorkspace();
   // Drafts open on Setup (you launch from there); live campaigns open on
   // Review (the daily work).
   const [tab, setTab] = useState<DetailTab>(
@@ -106,7 +106,7 @@ export function CampaignDetailView({ campaign }: CampaignDetailViewProps) {
     <div className="mx-auto w-full max-w-5xl p-6 md:p-10">
       {/* Back link */}
       <Link
-        href={`/org/${tenantId}`}
+        href={`/org/${slug}`}
         className="mb-6 inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
       >
         <ArrowLeft className="size-4" />

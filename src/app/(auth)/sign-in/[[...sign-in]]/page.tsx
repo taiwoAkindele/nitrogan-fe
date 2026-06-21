@@ -75,7 +75,8 @@ export default function SignInPage() {
   });
 
   const onSubmit = (data: SignInFormData) => {
-    // TODO: connect to backend — replace hardcoded tenant ID with real one from auth response
+    // TODO: connect to backend — replace the hardcoded workspace slug with the
+    // user's real workspace from the auth response.
     console.log("Sign in data:", data, { rememberMe });
     router.push("/org/default");
   };
