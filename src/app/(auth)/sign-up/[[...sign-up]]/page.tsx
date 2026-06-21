@@ -1,13 +1,17 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { BarChart3, Shield, Brain, ArrowRight } from "lucide-react";
+import { BarChart3, Shield, Brain, ArrowRight, Eye, EyeOff } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { signUpSchema, type SignUpFormData } from "@/lib/validations/auth";
+import { useRegister } from "@/features/auth";
 
 const NitroganLogo = () => (
   <svg
@@ -54,18 +58,39 @@ const features = [
 ];
 
 export default function SignUpPage() {
+  const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
+  const registerUser = useRegister();
+
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<SignUpFormData>({
     resolver: yupResolver(signUpSchema),
   });
 
   const onSubmit = (data: SignUpFormData) => {
-    // TODO: connect to backend
-    console.log("Sign up data:", data);
+    registerUser.mutate(
+      {
+        name: data.fullName,
+        email: data.email,
+        password: data.password,
+        organizationName: data.companyName,
+      },
+      {
+        onSuccess: (session) => {
+          const slug = session.memberships[0]?.slug;
+          router.push(slug ? `/org/${slug}` : "/sign-in");
+        },
+        onError: (error) => {
+          toast.error(error.message || "Unable to create account");
+        },
+      },
+    );
   };
+
+  const isSubmitting = registerUser.isPending;
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -192,6 +217,37 @@ export default function SignUpPage() {
                     </p>
                   )}
                 </div>
+
+                {/* Password */}
+                <div className="flex flex-col gap-2">
+                  <Label htmlFor="password">Password</Label>
+                  <div className="relative">
+                    <Input
+                      id="password"
+                      type={showPassword ? "text" : "password"}
+                      placeholder="At least 8 characters"
+                      className="h-12 px-4 pr-11"
+                      aria-invalid={!!errors.password}
+                      {...register("password")}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground"
+                    >
+                      {showPassword ? (
+                        <EyeOff className="size-4" />
+                      ) : (
+                        <Eye className="size-4" />
+                      )}
+                    </button>
+                  </div>
+                  {errors.password && (
+                    <p className="text-sm text-destructive">
+                      {errors.password.message}
+                    </p>
+                  )}
+                </div>
               </div>
 
               <div className="flex flex-col gap-4 pt-2">
@@ -222,7 +278,7 @@ export default function SignUpPage() {
 
       {/* Footer */}
       <footer className="flex flex-col items-center justify-between gap-4 border-t border-border px-10 py-8 text-sm text-muted-foreground md:flex-row">
-        <p>&copy; 2024 Nitrogan Systems Inc. All rights reserved.</p>
+        <p>&copy; 2026 Nitrogan Inc. All rights reserved.</p>
         <div className="flex gap-6">
           <Link href="#" className="transition-colors hover:text-primary">
             Documentation

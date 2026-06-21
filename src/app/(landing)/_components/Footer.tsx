@@ -64,7 +64,7 @@ export default function Footer() {
       </div>
 
       <div className="max-w-7xl mx-auto pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4">
-        <p className="text-muted-foreground text-xs">© 2024 Nitrogan Inc. All rights reserved.</p>
+        <p className="text-muted-foreground text-xs">© 2026 Nitrogan Inc. All rights reserved.</p>
         <div className="flex gap-6">
           <Link href="#" className="text-muted-foreground hover:text-primary transition-colors">
             <Globe className="size-5" />

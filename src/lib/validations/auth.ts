@@ -13,6 +13,10 @@ export const signUpSchema = yup.object({
     .string()
     .required("Company name is required")
     .min(2, "Company name must be at least 2 characters"),
+  password: yup
+    .string()
+    .required("Password is required")
+    .min(8, "Password must be at least 8 characters"),
 });
 
 export type SignUpFormData = yup.InferType<typeof signUpSchema>;
