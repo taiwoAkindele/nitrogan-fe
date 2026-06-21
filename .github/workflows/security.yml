@@ -9,7 +9,6 @@ on:
 
 permissions:
   contents: read
-  pull-requests: write # Gitleaks reads PR commits (and comments on findings)
 
 jobs:
   secret-scan:
@@ -18,11 +17,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # full history so the whole commit range is scanned
-      - name: Gitleaks
-        uses: gitleaks/gitleaks-action@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0 # full history so all commits are scanned
+      - name: Install Gitleaks
+        run: |
+          VERSION=8.24.3
+          curl -sSL "https://github.com/gitleaks/gitleaks/releases/download/v${VERSION}/gitleaks_${VERSION}_linux_x64.tar.gz" -o /tmp/gitleaks.tar.gz
+          tar -xzf /tmp/gitleaks.tar.gz -C /tmp gitleaks
+          sudo install /tmp/gitleaks /usr/local/bin/gitleaks
+          gitleaks version
+      - name: Scan full git history for secrets
+        run: gitleaks detect --redact --verbose --exit-code 1
 
   vuln-scan:
     name: Vulnerabilities & misconfig (Trivy)
