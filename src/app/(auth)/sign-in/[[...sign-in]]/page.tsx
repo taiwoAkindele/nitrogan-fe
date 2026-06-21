@@ -6,10 +6,12 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Mail, Lock, Eye, EyeOff, ArrowRight } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { signInSchema, type SignInFormData } from "@/lib/validations/auth";
+import { useLogin } from "@/features/auth";
 
 const NitroganLogo = () => (
   <svg
@@ -66,20 +68,37 @@ export default function SignInPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
 
+  const login = useLogin();
+
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<SignInFormData>({
     resolver: yupResolver(signInSchema),
   });
 
   const onSubmit = (data: SignInFormData) => {
-    // TODO: connect to backend — replace the hardcoded workspace slug with the
-    // user's real workspace from the auth response.
-    console.log("Sign in data:", data, { rememberMe });
-    router.push("/org/default");
+    login.mutate(data, {
+      onSuccess: (session) => {
+        const next = new URLSearchParams(window.location.search).get("next");
+        const slug = session.memberships[0]?.slug;
+        if (next) {
+          router.push(next);
+        } else if (slug) {
+          router.push(`/org/${slug}`);
+        } else {
+          // Authenticated but no workspace yet — send to onboarding.
+          router.push("/sign-up");
+        }
+      },
+      onError: (error) => {
+        toast.error(error.message || "Unable to sign in");
+      },
+    });
   };
+
+  const isSubmitting = login.isPending;
 
   return (
     <div className="relative flex min-h-screen flex-col overflow-hidden">

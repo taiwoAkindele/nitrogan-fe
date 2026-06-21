@@ -8,6 +8,10 @@ export default function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
+  // Hydration guard: flip a one-time mount flag so the toggle only renders
+  // after hydration, preventing an SSR/client theme mismatch. The setState is
+  // intentional here and runs exactly once.
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => setMounted(true), []);
 
   if (!mounted) return <div className="size-9" />;
