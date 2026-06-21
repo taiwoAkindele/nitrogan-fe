@@ -263,7 +263,7 @@ function SetupTab({
   return (
     <div className="space-y-8">
       {/* Lifecycle action — the one thing you do to the campaign itself */}
-      <div className="flex items-center justify-between rounded-xl border border-border bg-card p-4 shadow-sm">
+      <div className="flex flex-col gap-3 rounded-xl border border-border bg-card p-4 shadow-sm sm:flex-row sm:items-center sm:justify-between">
         <div>
           <p className="text-sm font-bold text-foreground">
             {status === "draft"
@@ -280,7 +280,7 @@ function SetupTab({
         </div>
         <Button
           variant={action.variant}
-          className="font-bold"
+          className="w-full font-bold sm:w-auto"
           onClick={() => onStatusChange(action.next)}
         >
           {action.label}

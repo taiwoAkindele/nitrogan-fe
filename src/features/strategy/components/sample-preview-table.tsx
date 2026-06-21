@@ -48,8 +48,8 @@ export function SamplePreviewTable({
           </EmptyState>
         </div>
       ) : (
-        <div className="overflow-hidden rounded-xl border border-border bg-card">
-          <table className="w-full text-left text-sm">
+        <div className="overflow-x-auto rounded-xl border border-border bg-card">
+          <table className="w-full min-w-[32rem] text-left text-sm">
           <thead>
             <tr className="border-b border-border bg-muted/50 text-muted-foreground">
               <th className="px-6 py-3 font-bold">Company</th>

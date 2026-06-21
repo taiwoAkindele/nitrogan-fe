@@ -241,12 +241,16 @@ collapse, not a mobile-first rewrite.
   phones, and the detail sub-grid stays single-column until xl.
 - **Intelligence header + sub-grid (P1):** buttons wrap→stack; `grid-cols-12` → single
   column below lg.
-- **P2:** Settings/campaign-detail `sm:grid-cols-2` → 1 col; Sample Preview table scrolls
-  horizontally on small.
+- **P2 — DONE (2026-06-21):** Sample Preview table now scrolls horizontally on small
+  (`overflow-x-auto` + `min-w`); campaign-detail lifecycle card stacks on small (button
+  goes full-width). The other P2-named grids (Settings → Integrations, campaign
+  compliance/approval-mode) already collapsed to one column via existing `sm:grid-cols-*`,
+  so no change was needed.
 - **Touch:** 44px min targets (bulk-select checkboxes, tab hit areas); tap replaces hover.
 
-**Rollout:** P0 nav shell → P0 Sales Inbox → P1 Lead Builder → P1 header/sub-grid →
-P2 minor stacking. Verify at 375 / 768 / 1280px.
+**Rollout — COMPLETE (2026-06-21):** P0 nav shell → P0 Sales Inbox → P1 Lead Builder →
+P1 header/sub-grid → P2 minor stacking, all done. Outstanding: a visual pass at
+375 / 768 / 1280px (not yet run — changes verified via typecheck/lint only).
 
 ---
 
