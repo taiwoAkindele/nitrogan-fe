@@ -61,7 +61,7 @@ export default function HeroSection() {
                 />
               ))}
             </div>
-            <p className="text-sm text-muted-foreground font-medium">Trusted by 500+ sales teams globally</p>
+            <p className="text-sm text-muted-foreground font-medium">Built for modern B2B sales teams</p>
           </div>
         </div>
 

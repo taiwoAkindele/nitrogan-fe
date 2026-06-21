@@ -163,7 +163,7 @@ export default function ForgotPasswordPage() {
                 </Link>
                 <div className="mt-8 w-full border-t border-border pt-8 text-center">
                   <p className="text-xs text-muted-foreground">
-                    &copy; 2024 Nitrogan Inc. All rights reserved.
+                    &copy; 2026 Nitrogan Inc. All rights reserved.
                     <br />
                     Need help?{" "}
                     <Link
