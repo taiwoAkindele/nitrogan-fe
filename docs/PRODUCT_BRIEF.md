@@ -228,8 +228,17 @@ collapse, not a mobile-first rewrite.
   its own section, and action buttons stack on phones. Cards (personas, firmographics,
   intent header, why-card) truncate/wrap defensively so nothing overflows when narrow.
   Driven by a `mobileView` state in `SalesInbox`.
-- **Lead Builder (P1):** md/sm single scroll column, sticky footer action bar; on sm lead
-  with the prediction and put filters behind an "Edit audience" sheet.
+- **Lead Builder (P1) — DONE (2026-06-21):** lg+ keeps the two independently-scrolling
+  columns (live prediction beside the config). **Below lg it's a 2-step flow** (product
+  call, 2026-06-21): Step 1 **Build** (config + sticky "Next: Preview →"); Step 2
+  **Preview** (sticky "← Edit audience" back bar, the prediction, and the Create Campaign
+  / Save as Draft actions). Rationale: on a phone you can't see config + prediction at
+  once anyway, so the live-while-building value isn't lost; one-screen-one-job beats a
+  long scroll, and the actions correctly live after the review. Toggled by a `step` state;
+  desktop path untouched. Footer trust meta hides on phones.
+- **Intelligence header + sub-grid (P1) — DONE (2026-06-21):** covered with the Sales
+  Inbox work — header split into identity row + details section, action buttons stack on
+  phones, and the detail sub-grid stays single-column until xl.
 - **Intelligence header + sub-grid (P1):** buttons wrap→stack; `grid-cols-12` → single
   column below lg.
 - **P2:** Settings/campaign-detail `sm:grid-cols-2` → 1 col; Sample Preview table scrolls
