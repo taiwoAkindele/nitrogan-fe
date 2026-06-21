@@ -17,10 +17,12 @@ export function PersonaList({ personas }: PersonaListProps) {
           <div key={persona.id} className="flex items-center gap-3">
             <Avatar name={persona.name} size="md" shape="circle" className="bg-muted" />
             <div className="min-w-0 flex-1">
-              <p className="text-sm font-bold">{persona.name}</p>
-              <p className="text-xs text-muted-foreground">{persona.role}</p>
+              <p className="truncate text-sm font-bold">{persona.name}</p>
+              <p className="truncate text-xs text-muted-foreground">
+                {persona.role}
+              </p>
             </div>
-            <Mail className="size-4 text-muted-foreground" />
+            <Mail className="size-4 shrink-0 text-muted-foreground" />
           </div>
         ))}
         <button className="w-full rounded-lg border border-primary/20 py-2 text-xs font-bold text-primary transition-colors hover:bg-primary/5">

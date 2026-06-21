@@ -28,7 +28,9 @@ export function WhyThisLeadCard({ score, signals }: WhyThisLeadCardProps) {
         {drivers.map((signal) => (
           <li key={signal.id}>
             <div className="mb-1 flex items-center justify-between gap-3">
-              <span className="text-sm font-medium">{signal.title}</span>
+              <span className="min-w-0 truncate text-sm font-medium">
+                {signal.title}
+              </span>
               <span className="shrink-0 text-xs font-bold text-primary">
                 +{signal.scoreContribution} intent
               </span>

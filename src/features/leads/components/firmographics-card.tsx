@@ -13,13 +13,13 @@ export function FirmographicsCard({ firmographics }: FirmographicsCardProps) {
       </h3>
       <div className="grid grid-cols-2 gap-4">
         {firmographics.map((item) => (
-          <div key={item.label} className="rounded-lg bg-muted/50 p-3">
-            <p className="text-[10px] font-bold uppercase text-muted-foreground">
+          <div key={item.label} className="min-w-0 rounded-lg bg-muted/50 p-3">
+            <p className="truncate text-[10px] font-bold uppercase text-muted-foreground">
               {item.label}
             </p>
             <p
               className={cn(
-                "text-sm font-bold",
+                "truncate text-sm font-bold",
                 item.highlight && "text-green-500"
               )}
             >

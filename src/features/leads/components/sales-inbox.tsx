@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { cn } from "@/lib/utils";
 import type { LeadFeedback, ProspectDetail, ProspectStatus } from "../types";
 import { MOCK_PROSPECTS } from "../utils/mock-data";
 import { ProspectListPane } from "./prospect-list-pane";
@@ -12,9 +13,18 @@ export function SalesInbox() {
   const [selectedProspectId, setSelectedProspectId] = useState<string | null>(
     MOCK_PROSPECTS[0]?.id ?? null
   );
+  // Below lg the list and detail are shown one at a time; this tracks which.
+  // At lg+ both panes are always visible, so this is ignored.
+  const [mobileView, setMobileView] = useState<"list" | "detail">("list");
 
   const selectedProspect =
     prospects.find((p) => p.id === selectedProspectId) ?? null;
+
+  // Selecting a lead reveals the detail pane on small/tablet screens.
+  const handleSelect = (id: string) => {
+    setSelectedProspectId(id);
+    setMobileView("detail");
+  };
 
   const handleStatusChange = async (
     prospectId: string,
@@ -65,19 +75,37 @@ export function SalesInbox() {
 
   return (
     <div className="flex h-full overflow-hidden">
-      <ProspectListPane
-        prospects={prospects}
-        activeTab={activeTab}
-        onTabChange={setActiveTab}
-        selectedId={selectedProspectId}
-        onSelect={setSelectedProspectId}
-        onBulkStatusChange={handleBulkStatusChange}
-      />
-      <IntelligenceDetailPanel
-        prospect={selectedProspect}
-        onStatusChange={handleStatusChange}
-        onRateLead={handleRateLead}
-      />
+      {/* List: full width below lg, fixed 400px at lg. Hidden when viewing a lead. */}
+      <div
+        className={cn(
+          "h-full w-full shrink-0 lg:w-[400px]",
+          mobileView === "detail" && "hidden lg:block"
+        )}
+      >
+        <ProspectListPane
+          prospects={prospects}
+          activeTab={activeTab}
+          onTabChange={setActiveTab}
+          selectedId={selectedProspectId}
+          onSelect={handleSelect}
+          onBulkStatusChange={handleBulkStatusChange}
+        />
+      </div>
+
+      {/* Detail: hidden below lg until a lead is opened. */}
+      <div
+        className={cn(
+          "h-full min-w-0 flex-1",
+          mobileView === "list" && "hidden lg:block"
+        )}
+      >
+        <IntelligenceDetailPanel
+          prospect={selectedProspect}
+          onStatusChange={handleStatusChange}
+          onRateLead={handleRateLead}
+          onBack={() => setMobileView("list")}
+        />
+      </div>
     </div>
   );
 }

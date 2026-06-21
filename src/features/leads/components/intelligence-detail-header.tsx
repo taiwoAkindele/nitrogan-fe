@@ -41,40 +41,27 @@ export function IntelligenceDetailHeader({
   const isSynced = syncedId === prospect.id;
 
   return (
-    <div className="border-b border-border bg-card p-8">
-      <div className="mb-8 flex items-start justify-between">
-        <div className="flex gap-6">
+    <div className="border-b border-border bg-card p-4 md:p-8">
+      {/* Identity + quick actions — stays on one row even on mobile */}
+      <div className="mb-4 flex items-start justify-between gap-3">
+        <div className="flex min-w-0 items-center gap-4">
           <Avatar
             initials={prospect.companyInitial}
             size="lg"
             shape="xl"
-            className={cn("border-4 border-muted text-white", prospect.avatarColor)}
+            className={cn(
+              "shrink-0 border-4 border-muted text-white",
+              prospect.avatarColor
+            )}
           />
-          <div>
-            <div className="mb-1 flex items-center gap-3">
-              <h1 className="text-3xl font-bold">{prospect.companyName}</h1>
-              <BadgeCheck className="size-5 text-primary" />
-            </div>
-            <p className="font-medium text-muted-foreground">
-              {prospect.description}
-            </p>
-            <div className="mt-3 flex items-center gap-4">
-              <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                <MapPin className="size-4" />
-                {prospect.location}
-              </div>
-              <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                <LinkIcon className="size-4" />
-                {prospect.websiteUrl}
-              </div>
-              <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                <Users className="size-4" />
-                {prospect.employeeCount.toLocaleString()} Employees
-              </div>
-            </div>
+          <div className="flex min-w-0 items-center gap-2">
+            <h1 className="truncate text-2xl font-bold md:text-3xl">
+              {prospect.companyName}
+            </h1>
+            <BadgeCheck className="size-5 shrink-0 text-primary" />
           </div>
         </div>
-        <div className="flex gap-2">
+        <div className="flex shrink-0 gap-2">
           <Button
             variant="secondary"
             size="sm"
@@ -112,29 +99,53 @@ export function IntelligenceDetailHeader({
         </div>
       </div>
 
+      {/* Company details — separate section so the row above never overflows */}
+      <div className="mb-6 space-y-2">
+        <p className="font-medium text-muted-foreground">
+          {prospect.description}
+        </p>
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+          <div className="flex items-center gap-1 text-sm text-muted-foreground">
+            <MapPin className="size-4" />
+            {prospect.location}
+          </div>
+          <div className="flex items-center gap-1 text-sm text-muted-foreground">
+            <LinkIcon className="size-4" />
+            {prospect.websiteUrl}
+          </div>
+          <div className="flex items-center gap-1 text-sm text-muted-foreground">
+            <Users className="size-4" />
+            {prospect.employeeCount.toLocaleString()} Employees
+          </div>
+        </div>
+      </div>
+
       {/* Action Buttons */}
-      <div className="flex gap-3">
-        <Button className="flex-1 gap-2 font-bold shadow-lg shadow-primary/20">
-          <Mail className="size-5" />
+      <div className="flex flex-col gap-2 sm:flex-row">
+        <Button className="h-11 w-full gap-2 font-bold shadow-lg shadow-primary/20 sm:h-9 sm:flex-1">
+          <Mail className="size-4" />
           Send Personalized Email
         </Button>
-        <Button variant="outline" className="flex-1 gap-2 font-bold">
-          <Calendar className="size-5" />
+        <Button
+          variant="outline"
+          className="h-11 w-full gap-2 font-bold sm:h-9 sm:flex-1"
+        >
+          <Calendar className="size-4" />
           Book Meeting
         </Button>
         <Button
           variant="outline"
-          className="flex-1 gap-2 font-bold"
+          className="h-11 w-full gap-2 font-bold sm:h-9 sm:flex-1"
           onClick={() => setSyncedId(prospect.id)}
         >
           {isSynced ? (
             <>
-              <Check className="size-5 text-emerald-500" />
+              <Check className="size-4 text-emerald-500" />
               Synced to CRM
             </>
           ) : (
             <>
-              <RefreshCw className="size-5" />
+              <RefreshCw className="size-4" />
               Sync to CRM
             </>
           )}

@@ -1,24 +1,36 @@
 "use client";
 
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 
+import { cn } from "@/lib/utils";
 import { Sidebar } from "./sidebar";
 import { Topbar } from "./topbar";
 import { BottomNav } from "./bottom-nav";
 
 // The responsive app shell:
-//  - large (≥lg): full sidebar
+//  - large (≥lg): full sidebar, except the inbox (collapses to a rail for room)
 //  - medium (md–lg): 64px icon rail
 //  - small (<md): sidebar hidden → off-canvas drawer + bottom tab bar
 export function AppShell({ children }: { children: React.ReactNode }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const closeDrawer = () => setDrawerOpen(false);
 
+  // The inbox is a focus-heavy 3-pane view; collapse the sidebar to a rail at
+  // lg so the prospect detail gets the reclaimed width.
+  const pathname = usePathname();
+  const collapsed = pathname.includes("/leads");
+
   return (
     <div className="flex h-screen overflow-hidden">
-      {/* Persistent sidebar: rail at md, full at lg, hidden on small */}
-      <aside className="hidden shrink-0 border-r border-border md:block md:w-16 lg:w-64">
-        <Sidebar />
+      {/* Persistent sidebar: rail at md, full at lg (rail on the inbox), hidden on small */}
+      <aside
+        className={cn(
+          "hidden shrink-0 border-r border-border transition-[width] duration-200 md:block md:w-16",
+          collapsed ? "lg:w-16" : "lg:w-64"
+        )}
+      >
+        <Sidebar collapsed={collapsed} />
       </aside>
 
       {/* Mobile drawer */}

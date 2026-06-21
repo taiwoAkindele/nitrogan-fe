@@ -10,11 +10,11 @@ interface IntentScoreChartProps {
 export function IntentScoreChart({ score }: IntentScoreChartProps) {
   return (
     <div className="rounded-xl border border-border bg-card p-6">
-      <div className="mb-6 flex items-center justify-between">
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
         <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">
           Intent Score Over Time
         </h3>
-        <span className="text-sm font-bold text-primary">
+        <span className="whitespace-nowrap text-sm font-bold text-primary">
           {score}/100 &bull; Critical
         </span>
       </div>

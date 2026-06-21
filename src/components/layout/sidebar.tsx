@@ -22,28 +22,38 @@ const NAV_ITEMS = [
 interface SidebarProps {
   /** Force the full icon+label layout regardless of breakpoint (mobile drawer). */
   expanded?: boolean;
+  /** Force the 64px icon rail at every breakpoint (focus mode, e.g. the inbox). */
+  collapsed?: boolean;
   /** Called when a nav link is followed — used to close the mobile drawer. */
   onNavigate?: () => void;
 }
 
-// Three display modes:
-//  - persistent, large (≥lg): full icon + label
-//  - persistent, medium (md–lg): 64px icon rail (labels hidden)
+// Display modes:
 //  - mobile drawer (`expanded`): full icon + label at any width
-export function Sidebar({ expanded, onNavigate }: SidebarProps) {
+//  - focus rail (`collapsed`): 64px icon rail at any width
+//  - default: 64px rail at md, full icon + label at lg
+export function Sidebar({ expanded, collapsed, onNavigate }: SidebarProps) {
   const { tenantId } = useTenant();
   const pathname = usePathname();
   const basePath = `/org/${tenantId}`;
 
-  // When not expanded, labels/text appear only at lg; below that it's a rail.
-  const label = expanded ? "inline" : "hidden lg:inline";
-  const meta = expanded ? "block" : "hidden lg:block";
-  const center = expanded ? "" : "justify-center lg:justify-start";
+  // `expanded` always wins; `collapsed` forces the rail; otherwise responsive.
+  const label = expanded ? "inline" : collapsed ? "hidden" : "hidden lg:inline";
+  const meta = expanded ? "block" : collapsed ? "hidden" : "hidden lg:block";
+  const center = expanded
+    ? ""
+    : collapsed
+      ? "justify-center"
+      : "justify-center lg:justify-start";
+  const padLogo = expanded ? "p-6" : collapsed ? "p-4" : "p-4 lg:p-6";
+  const padNav = expanded ? "px-3" : collapsed ? "px-2" : "px-2 lg:px-3";
+  const padFooter = expanded ? "p-4" : collapsed ? "p-2" : "p-2 lg:p-4";
+  const footerDir = expanded ? "" : collapsed ? "flex-col" : "flex-col lg:flex-row";
 
   return (
     <div className="flex h-full w-full flex-col bg-card">
       {/* Logo */}
-      <div className={cn("flex items-center gap-3", center, expanded ? "p-6" : "p-4 lg:p-6")}>
+      <div className={cn("flex items-center gap-3", center, padLogo)}>
         <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground">
           <Rocket className="size-4" />
         </div>
@@ -51,7 +61,7 @@ export function Sidebar({ expanded, onNavigate }: SidebarProps) {
       </div>
 
       {/* Navigation */}
-      <nav className={cn("flex-1 space-y-1", expanded ? "px-3" : "px-2 lg:px-3")}>
+      <nav className={cn("flex-1 space-y-1", padNav)}>
         {NAV_ITEMS.map(({ label: text, icon: Icon, href }) => {
           const fullPath = `${basePath}${href}`;
           const isActive =
@@ -81,13 +91,8 @@ export function Sidebar({ expanded, onNavigate }: SidebarProps) {
       </nav>
 
       {/* User Profile */}
-      <div className={cn("border-t border-border", expanded ? "p-4" : "p-2 lg:p-4")}>
-        <div
-          className={cn(
-            "flex items-center gap-3 px-2 py-2",
-            expanded ? "" : "flex-col lg:flex-row"
-          )}
-        >
+      <div className={cn("border-t border-border", padFooter)}>
+        <div className={cn("flex items-center gap-3 px-2 py-2", footerDir)}>
           <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-muted text-sm font-bold">
             A
           </div>

@@ -130,7 +130,7 @@ export function ProspectListPane({
   };
 
   return (
-    <section className="flex w-[400px] flex-col border-r border-border bg-card">
+    <section className="flex h-full w-full flex-col border-r border-border bg-card">
       <TabBar
         variant="segmented"
         tabs={tabs}

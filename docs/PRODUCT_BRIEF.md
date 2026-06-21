@@ -216,10 +216,18 @@ collapse, not a mobile-first rewrite.
   topbar hamburger); **bottom tab bar on small** for the 3 primary destinations; topbar
   gains the hamburger, search flexes/shrinks (kept as a shrinking input rather than an
   icon toggle — avoids dead UI), and "New Discovery" → icon-only on small. Large screens
-  unchanged.
-- **Sales Inbox (P0):** lg side-by-side → md narrow list + detail sub-grid stacks → sm
-  **one-view-at-a-time** (list, tap pushes full-screen detail with back; reuses
-  `selectedProspectId`).
+  unchanged. **Focus mode:** on the inbox route the sidebar auto-collapses to the rail
+  (derived from `pathname`, animated) so the prospect detail gets the reclaimed ~190px —
+  `Sidebar` gained a `collapsed` mode for this.
+- **Sales Inbox (P0) — DONE (2026-06-21):** lg keeps both panes side by side; **below lg
+  (tablet *and* phone) it's one-view-at-a-time** (refined from the original md-keeps-both
+  plan, per product call). Tapping a lead reveals the detail pane and hides the list; a
+  **"Back to inbox"** bar (`lg:hidden`) returns to the list. List goes full-width below
+  lg; the detail's internal 8/4 grid stays single-column until **xl** (paired with the
+  inbox sidebar-collapse above, which frees the width xl needs), the header meta moved to
+  its own section, and action buttons stack on phones. Cards (personas, firmographics,
+  intent header, why-card) truncate/wrap defensively so nothing overflows when narrow.
+  Driven by a `mobileView` state in `SalesInbox`.
 - **Lead Builder (P1):** md/sm single scroll column, sticky footer action bar; on sm lead
   with the prediction and put filters behind an "Edit audience" sheet.
 - **Intelligence header + sub-grid (P1):** buttons wrap→stack; `grid-cols-12` → single
