@@ -2,8 +2,12 @@ import { api, API_VERSION } from "@/lib/api/client";
 import type {
   AcceptInviteInput,
   AuthUserView,
+  ChangePasswordInput,
+  ForgotPasswordInput,
   LoginInput,
+  OkResponse,
   RegisterInput,
+  ResetPasswordInput,
   SessionView,
 } from "./types";
 
@@ -14,8 +18,9 @@ export async function login(input: LoginInput): Promise<SessionView> {
   return data;
 }
 
-export async function register(input: RegisterInput): Promise<SessionView> {
-  const { data } = await api.post<SessionView>(`${base}/register`, input);
+// Registration does not return tokens — the user signs in afterwards.
+export async function register(input: RegisterInput): Promise<AuthUserView> {
+  const { data } = await api.post<AuthUserView>(`${base}/register`, input);
   return data;
 }
 
@@ -28,5 +33,26 @@ export async function acceptInvite(
 
 export async function getMe(): Promise<AuthUserView> {
   const { data } = await api.get<AuthUserView>(`${base}/me`);
+  return data;
+}
+
+export async function forgotPassword(
+  input: ForgotPasswordInput,
+): Promise<OkResponse> {
+  const { data } = await api.post<OkResponse>(`${base}/password/forgot`, input);
+  return data;
+}
+
+export async function resetPassword(
+  input: ResetPasswordInput,
+): Promise<OkResponse> {
+  const { data } = await api.post<OkResponse>(`${base}/password/reset`, input);
+  return data;
+}
+
+export async function changePassword(
+  input: ChangePasswordInput,
+): Promise<OkResponse> {
+  const { data } = await api.post<OkResponse>(`${base}/password/change`, input);
   return data;
 }

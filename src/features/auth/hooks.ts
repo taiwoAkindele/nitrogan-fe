@@ -9,12 +9,24 @@ import {
 import { queryKeys } from "@/lib/query/keys";
 import { clearTokens, hasSession, setTokens } from "@/lib/auth/tokens";
 import type { ApiError } from "@/lib/api/errors";
-import { acceptInvite, getMe, login, register } from "./api";
+import {
+  acceptInvite,
+  changePassword,
+  forgotPassword,
+  getMe,
+  login,
+  register,
+  resetPassword,
+} from "./api";
 import type {
   AcceptInviteInput,
   AuthUserView,
+  ChangePasswordInput,
+  ForgotPasswordInput,
   LoginInput,
+  OkResponse,
   RegisterInput,
+  ResetPasswordInput,
   SessionView,
 } from "./types";
 
@@ -44,20 +56,14 @@ export function useLogin(
   });
 }
 
+// Registration does NOT establish a session — the user is sent to the sign-in
+// page to log in with their new credentials.
 export function useRegister(
-  options?: UseMutationOptions<SessionView, ApiError, RegisterInput>,
+  options?: UseMutationOptions<AuthUserView, ApiError, RegisterInput>,
 ) {
-  const establish = useSessionEstablisher();
-  return useMutation<SessionView, ApiError, RegisterInput>({
+  return useMutation<AuthUserView, ApiError, RegisterInput>({
     mutationFn: register,
     ...options,
-    onSuccess: (session, ...rest) => {
-      establish(session);
-      (options?.onSuccess as ((...a: unknown[]) => void) | undefined)?.(
-        session,
-        ...rest,
-      );
-    },
   });
 }
 
@@ -85,6 +91,33 @@ export function useSession() {
     queryFn: getMe,
     enabled: hasSession(),
     staleTime: 5 * 60_000,
+  });
+}
+
+export function useForgotPassword(
+  options?: UseMutationOptions<OkResponse, ApiError, ForgotPasswordInput>,
+) {
+  return useMutation<OkResponse, ApiError, ForgotPasswordInput>({
+    mutationFn: forgotPassword,
+    ...options,
+  });
+}
+
+export function useResetPassword(
+  options?: UseMutationOptions<OkResponse, ApiError, ResetPasswordInput>,
+) {
+  return useMutation<OkResponse, ApiError, ResetPasswordInput>({
+    mutationFn: resetPassword,
+    ...options,
+  });
+}
+
+export function useChangePassword(
+  options?: UseMutationOptions<OkResponse, ApiError, ChangePasswordInput>,
+) {
+  return useMutation<OkResponse, ApiError, ChangePasswordInput>({
+    mutationFn: changePassword,
+    ...options,
   });
 }
 

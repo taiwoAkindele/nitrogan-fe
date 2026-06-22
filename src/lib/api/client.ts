@@ -59,6 +59,8 @@ const AUTH_FREE_PATHS = [
   `/${API_VERSION}/auth/register`,
   `/${API_VERSION}/auth/refresh`,
   `/${API_VERSION}/auth/invite/accept`,
+  `/${API_VERSION}/auth/password/forgot`,
+  `/${API_VERSION}/auth/password/reset`,
 ];
 
 export const api = axios.create({

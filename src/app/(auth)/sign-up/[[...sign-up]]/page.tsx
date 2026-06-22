@@ -78,11 +78,9 @@ export default function SignUpPage() {
         organizationName: data.companyName,
       },
       {
-        // Success/error toasts are handled centrally by the axios client.
-        onSuccess: (session) => {
-          const slug = session.memberships[0]?.slug;
-          router.push(slug ? `/org/${slug}` : "/sign-in");
-        },
+        // Account created (no auto-login) — send the user to sign in with
+        // their new credentials. Success/error toasts are handled centrally.
+        onSuccess: () => router.push("/sign-in"),
       },
     );
   };

@@ -12,6 +12,7 @@ import {
   forgotPasswordSchema,
   type ForgotPasswordFormData,
 } from "@/lib/validations/auth";
+import { useForgotPassword } from "@/features/auth";
 
 const NitroganLogo = () => (
   <svg
@@ -40,20 +41,29 @@ export default function ForgotPasswordPage() {
   const [submitted, setSubmitted] = useState(false);
   const [submittedEmail, setSubmittedEmail] = useState("");
 
+  // The backend is enumeration-safe (always 200), so we show the confirmation
+  // screen on success regardless of whether the email is registered. The success
+  // toast is handled centrally by the axios client.
+  const forgot = useForgotPassword();
+
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<ForgotPasswordFormData>({
     resolver: yupResolver(forgotPasswordSchema),
   });
 
   const onSubmit = (data: ForgotPasswordFormData) => {
-    // TODO: connect to backend
-    console.log("Forgot password data:", data);
-    setSubmittedEmail(data.email);
-    setSubmitted(true);
+    forgot.mutate(data, {
+      onSuccess: () => {
+        setSubmittedEmail(data.email);
+        setSubmitted(true);
+      },
+    });
   };
+
+  const isSubmitting = forgot.isPending;
 
   return (
     <div className="relative flex min-h-screen flex-col overflow-hidden">
