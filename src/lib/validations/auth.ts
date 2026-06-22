@@ -79,3 +79,16 @@ export const acceptInviteSchema = yup.object({
 });
 
 export type AcceptInviteFormData = yup.InferType<typeof acceptInviteSchema>;
+
+export const resetPasswordSchema = yup.object({
+  password: yup
+    .string()
+    .required("Password is required")
+    .min(8, "Password must be at least 8 characters"),
+  confirmPassword: yup
+    .string()
+    .required("Please confirm your password")
+    .oneOf([yup.ref("password")], "Passwords do not match"),
+});
+
+export type ResetPasswordFormData = yup.InferType<typeof resetPasswordSchema>;
