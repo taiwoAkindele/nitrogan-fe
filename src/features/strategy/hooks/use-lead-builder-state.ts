@@ -6,8 +6,8 @@ import type { BuilderState } from "../types";
 import { DEFAULT_BUILDER_STATE } from "../utils/mock-data";
 
 /** Owns the ICP builder state and the immutable updates for each control. */
-export function useLeadBuilderState() {
-  const [state, setState] = useState<BuilderState>(DEFAULT_BUILDER_STATE);
+export function useLeadBuilderState(initial: BuilderState = DEFAULT_BUILDER_STATE) {
+  const [state, setState] = useState<BuilderState>(initial);
 
   const addIndustry = (industry: string) =>
     setState((prev) => ({

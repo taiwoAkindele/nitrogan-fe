@@ -5,4 +5,7 @@ export {
   register,
   acceptInvite,
   getMe,
+  forgotPassword,
+  resetPassword,
+  changePassword,
 } from "./api";

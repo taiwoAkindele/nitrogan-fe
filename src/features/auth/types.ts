@@ -41,3 +41,21 @@ export interface AcceptInviteInput {
   password: string;
   name: string;
 }
+
+export interface ForgotPasswordInput {
+  email: string;
+}
+
+export interface ResetPasswordInput {
+  token: string;
+  password: string;
+}
+
+export interface ChangePasswordInput {
+  currentPassword: string;
+  newPassword: string;
+}
+
+export interface OkResponse {
+  ok: boolean;
+}

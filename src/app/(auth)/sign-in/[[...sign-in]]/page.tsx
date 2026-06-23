@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Mail, Lock, Eye, EyeOff, ArrowRight } from "lucide-react";
-import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -79,6 +78,7 @@ export default function SignInPage() {
   });
 
   const onSubmit = (data: SignInFormData) => {
+    // Success/error toasts are handled centrally by the axios client.
     login.mutate(data, {
       onSuccess: (session) => {
         const next = new URLSearchParams(window.location.search).get("next");
@@ -91,9 +91,6 @@ export default function SignInPage() {
           // Authenticated but no workspace yet — send to onboarding.
           router.push("/sign-up");
         }
-      },
-      onError: (error) => {
-        toast.error(error.message || "Unable to sign in");
       },
     });
   };

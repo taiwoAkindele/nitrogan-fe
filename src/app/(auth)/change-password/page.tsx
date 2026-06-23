@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
@@ -20,6 +21,7 @@ import {
   changePasswordSchema,
   type ChangePasswordFormData,
 } from "@/lib/validations/auth";
+import { useChangePassword } from "@/features/auth";
 
 function getPasswordStrength(password: string) {
   let score = 0;
@@ -42,14 +44,23 @@ export default function ChangePasswordPage() {
   const [showNew, setShowNew] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
+  const router = useRouter();
+  const changePassword = useChangePassword();
+
   const {
     register,
     handleSubmit,
     watch,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<ChangePasswordFormData>({
     resolver: yupResolver(changePasswordSchema),
   });
+
+  const isSubmitting = changePassword.isPending;
+
+  // Where to go after success / cancel — falls back to the dashboard.
+  const returnTo = () =>
+    new URLSearchParams(window.location.search).get("next") ?? "/";
 
   const newPassword = watch("newPassword") || "";
   const strength = getPasswordStrength(newPassword);
@@ -64,8 +75,14 @@ export default function ChangePasswordPage() {
   ];
 
   const onSubmit = (data: ChangePasswordFormData) => {
-    // TODO: connect to backend
-    console.log("Change password data:", data);
+    // Success/error toasts are handled centrally by the axios client.
+    changePassword.mutate(
+      {
+        currentPassword: data.currentPassword,
+        newPassword: data.newPassword,
+      },
+      { onSuccess: () => router.push(returnTo()) },
+    );
   };
 
   return (
@@ -237,19 +254,20 @@ export default function ChangePasswordPage() {
             </Button>
 
             <div className="text-center">
-              <Link
-                href="#"
+              <button
+                type="button"
+                onClick={() => router.push(returnTo())}
                 className="text-sm font-medium text-primary transition-colors hover:text-primary/80"
               >
                 Cancel and return to dashboard
-              </Link>
+              </button>
             </div>
           </form>
         </div>
 
         {/* Footer Notice */}
         <p className="mt-8 text-center text-xs leading-relaxed text-muted-foreground">
-          Changing your password will sign you out of all other active sessions.
+          Choose a strong password you don&apos;t reuse on other sites.
           <br />
           If you didn&apos;t request this change, please{" "}
           <Link href="#" className="underline decoration-primary/40 hover:text-primary transition-colors">

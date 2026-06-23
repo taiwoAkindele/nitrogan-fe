@@ -1,16 +1,27 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard,
   Inbox,
   Lightbulb,
   Settings,
   Rocket,
+  KeyRound,
+  LogOut,
 } from "lucide-react";
 import { useWorkspace } from "@/lib/workspace/context";
-import { cn } from "@/lib/utils";
+import { useSession, useLogout } from "@/features/auth";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
+import { Avatar } from "@/components/ui/avatar";
+import { cn, getInitials } from "@/lib/utils";
 
 // Ordered by the product loop: Discover → Review → Act.
 const NAV_ITEMS = [
@@ -35,7 +46,24 @@ interface SidebarProps {
 export function Sidebar({ expanded, collapsed, onNavigate }: SidebarProps) {
   const { slug } = useWorkspace();
   const pathname = usePathname();
+  const router = useRouter();
   const basePath = `/org/${slug}`;
+
+  const { data: user } = useSession();
+  const logout = useLogout();
+
+  const settingsPath = `${basePath}/settings`;
+
+  const go = (href: string) => {
+    onNavigate?.();
+    router.push(href);
+  };
+
+  const handleLogout = () => {
+    onNavigate?.();
+    logout();
+    router.push("/sign-in");
+  };
 
   // `expanded` always wins; `collapsed` forces the rail; otherwise responsive.
   const label = expanded ? "inline" : collapsed ? "hidden" : "hidden lg:inline";
@@ -90,27 +118,57 @@ export function Sidebar({ expanded, collapsed, onNavigate }: SidebarProps) {
         })}
       </nav>
 
-      {/* User Profile */}
+      {/* User Profile + account menu (logout lives here) */}
       <div className={cn("border-t border-border", padFooter)}>
-        <div className={cn("flex items-center gap-3 px-2 py-2", footerDir)}>
-          <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-muted text-sm font-bold">
-            A
-          </div>
-          <div className={cn("min-w-0 flex-1", meta)}>
-            <p className="truncate text-sm font-medium">Alex Rivera</p>
-            <p className="truncate text-xs text-muted-foreground">
-              Enterprise Sales
-            </p>
-          </div>
-          <Link
-            href={`${basePath}/settings`}
-            onClick={onNavigate}
-            aria-label="Settings"
-            className="text-muted-foreground transition-colors hover:text-foreground"
+        <DropdownMenu>
+          <DropdownMenuTrigger
+            aria-label="Account menu"
+            className={cn(
+              "flex w-full items-center gap-3 rounded-lg px-2 py-2 text-left transition-colors hover:bg-muted",
+              center,
+              footerDir,
+            )}
           >
-            <Settings className="size-4" />
-          </Link>
-        </div>
+            <Avatar
+              initials={getInitials(user?.name ?? "") || "?"}
+              size="sm"
+              shape="circle"
+              className="bg-muted text-muted-foreground"
+            />
+            <div className={cn("min-w-0 flex-1", meta)}>
+              <p className="truncate text-sm font-medium">
+                {user?.name ?? "Account"}
+              </p>
+              <p className="truncate text-xs text-muted-foreground">
+                {user?.email ?? ""}
+              </p>
+            </div>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent side="top" align="start" className="w-56">
+            {user && (
+              <div className="truncate px-1.5 py-1 text-xs font-medium text-muted-foreground">
+                {user.email}
+              </div>
+            )}
+            <DropdownMenuItem onClick={() => go(settingsPath)}>
+              <Settings className="size-4" />
+              Settings
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() =>
+                go(`/change-password?next=${encodeURIComponent(settingsPath)}`)
+              }
+            >
+              <KeyRound className="size-4" />
+              Change password
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem variant="destructive" onClick={handleLogout}>
+              <LogOut className="size-4" />
+              Log out
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </div>
   );
